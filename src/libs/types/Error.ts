@@ -12,7 +12,7 @@ export enum HttpCode {
 
 // Message enum with user-friendly error messages
 export enum Message {
-  SOMETHING_WENT_WRONG = "Something went wron", // Generic error message for unexpected issues.
+  SOMETHING_WENT_WRONG = "Something went wrong", // Generic error message for unexpected issues.
   NO_DATA_FOUND = "No data is found!", // Indicates that no data was found for the request.
   CREATE_FAILED = "Create is failed!", // Error message for failed resource creation.
   UPDATE_FAILED = "Update is failed!", // Error message for failed resource update.
