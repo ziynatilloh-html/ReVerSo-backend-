@@ -25,10 +25,10 @@ class MemberService {
   }
   public async processLogin(input: LoginInput): Promise<Member> {
     const member = await this.memberModel
-      .findOne(
-        { memberNick: input.memberNick },
-        { memberNick: 1, memberPassword: 1 }
-      )
+      .findOne({
+        $or: [{ memberNick: 1 }, { memberPhone: 1 }, { email: 1 }],
+      })
+      .select("+memberPassword")
       .exec();
     if (!member) throw new Errors(HttpCode.NOT_FOUND, Message.NO_MEMBER_FOUND);
     const isMatch = input.memberPassword === member.memberPassword;

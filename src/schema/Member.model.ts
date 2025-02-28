@@ -36,7 +36,7 @@ const memberSchema = new Schema(
     },
     memberEmail: {
       type: String,
-      required: false,
+      required: true,
       index: { unique: true, sparse: true },
     },
     memberImage: {
