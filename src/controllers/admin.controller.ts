@@ -31,6 +31,7 @@ adminController.getSignup = (req: Request, res: Response) => {
 };
 
 //Back-end side server rendering
+
 adminController.processLogin = async (req: Request, res: Response) => {
   try {
     console.log("processLogin");
