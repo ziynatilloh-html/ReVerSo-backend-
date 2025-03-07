@@ -12,7 +12,7 @@ routerAdmin
 routerAdmin
   .get("/signup", adminController.getSignup)
   .post("/signup", adminController.processSignup);
-
+routerAdmin.get("/logout", adminController.processLogout);
 routerAdmin.get("/check-me", adminController.checkAuthSession);
 
 export default routerAdmin;
