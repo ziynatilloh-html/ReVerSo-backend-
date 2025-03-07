@@ -18,6 +18,7 @@ export enum Message {
   UPDATE_FAILED = "Update is failed!",
   NO_MEMBER_FOUND = "No member is registered with this nickname!",
   USED_NICK_PHONE = "This number is already registered!",
+  NOT_AUTHENTICATED = "Sorry, but you are not authentificated sign-up first!",
 }
 
 // Custom error class extending the built-in Error class

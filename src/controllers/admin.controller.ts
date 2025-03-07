@@ -3,6 +3,7 @@ import { T } from "../libs/types/common";
 import MemberService from "../service/Member.service";
 import { MemberType } from "../libs/enums/member.enum";
 import { AdminRequest, LoginInput, MemberInput } from "../libs/types/member";
+import { Message } from "../libs/types/Error";
 
 const adminController: T = {};
 adminController.goHome = (req: Request, res: Response) => {
@@ -52,7 +53,6 @@ adminController.processSignup = async (req: AdminRequest, res: Response) => {
     console.log("processSignup");
 
     const newMember: MemberInput = req.body;
-    console.log("req.body:", req.body);
     newMember.memberType = MemberType.ADMIN;
 
     const memberService = new MemberService();
@@ -63,6 +63,16 @@ adminController.processSignup = async (req: AdminRequest, res: Response) => {
     });
   } catch (err) {
     console.log("Error, processSignup:", err);
+    res.send(err);
+  }
+};
+adminController.checkAuthSession = async (req: AdminRequest, res: Response) => {
+  try {
+    if (req.session?.member)
+      res.send(`<script>alert("${req.session.member.memberNick}")<script>`);
+    else res.send(`<script>alert("${Message.NOT_AUTHENTICATED}")<script>`);
+  } catch (err) {
+    console.log("Error,processLogin", err);
     res.send(err);
   }
 };

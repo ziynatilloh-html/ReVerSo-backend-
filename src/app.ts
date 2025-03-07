@@ -9,7 +9,7 @@ import ConnectMongoDB from "connect-mongodb-session";
 
 const MongoDBStore = ConnectMongoDB(session);
 const store = new MongoDBStore({
-  uri: String(process.env.MORGAN_URL),
+  uri: String(process.env.MONGO_URL),
   collection: "sessions",
 });
 
@@ -23,7 +23,7 @@ app.use(morgan(MORGAN_FORMAT));
 /** 2-SESSIONS **/
 app.use(
   session({
-    secret: String(process.env.SESSIN_SECRET),
+    secret: String(process.env.SESSION_SECRET),
     cookie: {
       maxAge: 1000 * 3600 * 3,
     },
