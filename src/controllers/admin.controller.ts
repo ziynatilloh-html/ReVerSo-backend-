@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { T } from "../libs/types/common";
 import MemberService from "../service/Member.service";
 import { MemberType } from "../libs/enums/member.enum";
-import { LoginInput, MemberInput } from "../libs/types/member";
+import { AdminRequest, LoginInput, MemberInput } from "../libs/types/member";
 
 const adminController: T = {};
 adminController.goHome = (req: Request, res: Response) => {
@@ -32,19 +32,22 @@ adminController.getSignup = (req: Request, res: Response) => {
 
 //Back-end side server rendering
 
-adminController.processLogin = async (req: Request, res: Response) => {
+adminController.processLogin = async (req: AdminRequest, res: Response) => {
   try {
     console.log("processLogin");
     const input: LoginInput = req.body;
 
     const memberService = new MemberService();
     const result = await memberService.processLogin(input);
-    res.send(result);
+    req.session.member = result;
+    req.session.save(function () {
+      res.send(result);
+    });
   } catch (err) {
     console.log("Error processLogin:", err);
   }
 };
-adminController.processSignup = async (req: Request, res: Response) => {
+adminController.processSignup = async (req: AdminRequest, res: Response) => {
   try {
     console.log("processSignup");
 
@@ -54,7 +57,10 @@ adminController.processSignup = async (req: Request, res: Response) => {
 
     const memberService = new MemberService();
     const result = await memberService.processSignup(newMember);
-    res.send(result);
+    req.session.member = result;
+    req.session.save(function () {
+      res.send(result);
+    });
   } catch (err) {
     console.log("Error, processSignup:", err);
     res.send(err);
