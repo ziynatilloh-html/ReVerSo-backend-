@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { T } from "../libs/types/common";
 import MemberService from "../service/Member.service";
 import { MemberType } from "../libs/enums/member.enum";
@@ -77,8 +77,11 @@ adminController.processSignup = async (req: AdminRequest, res: Response) => {
 adminController.processLogout = async (req: AdminRequest, res: Response) => {
   try {
     console.log("processLogout");
-
-    req.session.destroy(function () {
+    req.session.destroy(function (err) {
+      if (err) {
+        console.log("Session destruction error:", err);
+        return res.send(`<script>alert("Logout failed")</script>`);
+      }
       res.redirect("/admin");
     });
   } catch (err) {
@@ -94,6 +97,19 @@ adminController.checkAuthSession = async (req: AdminRequest, res: Response) => {
   } catch (err) {
     console.log("Error,processLogin", err);
     res.send(err);
+  }
+};
+adminController.verifyAdmin = (
+  req: AdminRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  if (req.session?.member?.memberType === MemberType.ADMIN) {
+    req.member = req.session.member;
+    next();
+  } else {
+    const message = Message.NOT_AUTHENTICATED;
+    res.send(`<script>alert("${message}")<script>`);
   }
 };
 export default adminController;
