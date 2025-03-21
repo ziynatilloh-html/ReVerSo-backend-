@@ -1,19 +1,74 @@
 <%- include('includes/header') %>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Demo of RevealFx</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" type="text/css" media="screen" href="/css/home.css" />
+</head>
+
 <body>
-  <div class="card" style="width: 18rem">
-    <img
-      src="https://i.pinimg.com/736x/25/38/e7/2538e73b17b4bb1f9f8fa0132faaacf4.jpg"
-      class="card-img-top"
-      alt="..."
-    />
-    <div class="card-body">
-      <h5 class="card-title">Card title</h5>
-      <p class="card-text">
-        Some quick example text to build on the card title and make up the bulk
-        of the card's content.
-      </p>
-      <a href="#" class="btn btn-primary">Go somewhere</a>
+  <body class="flex items-center justify-center min-h-screen bg-gray-100">
+    <div class="card-container bg-white shadow-lg">
+      <div
+        class="card bg-blue-500 rounded-2xl h-[300px] w-full top-0 left-0"
+        style="background-image: url('./img/adminlogo.jpg')"
+      >
+        <div class="card-content">
+          <div class="card-title">Admin Panel</div>
+          <div class="card-description">
+            Manage and oversee your platform with ease. The admin panel provides
+            a seamless interface for handling users, products, and content. From
+            updating inventory to monitoring user activity is at your
+            fingertips.
+          </div>
+        </div>
+      </div>
+      <div
+        class="card bg-teal-600 rounded-2xl border-white h-[295px] w-[282px] top-[302px] left-0.5 bottom-0"
+        style="background-image: url('./img/modern.jpg')"
+      >
+        <div class="card-content">
+          <div class="card-title">Product Control</div>
+          <div class="card-description">
+            “Effortlessly manage your inventory with the Product Control panel.
+            Add, edit, or remove products with just a few clicks. Track stock
+            levels, update pricing, and organize categories to ensure a smooth
+            shopping experience for your customers. Stay in control and keep
+            your product catalog up to date with ease
+          </div>
+        </div>
+      </div>
+      <div
+        class="card-d3 bg-teal-600 rounded-2xl border-4 hover:border-0 border-white h-[334px] w-[334px] right-0 bottom-0"
+        style="background-image: url('./img/product.jpg')"
+      >
+        <div class="card-content">
+          <div class="card-title">Billing Check</div>
+          <div class="card-description">
+            Easily monitor and manage transactions with the Billing Check panel.
+            Track payments, review invoices, and ensure seamless order
+            processing. Stay updated on financial records and maintain accuracy
+            with a user-friendly interface designed for efficiency and clarity.
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
+    <div class="dual__content flex flex-col items-center gap-4 relative">
+      <img
+        src="/img/layer1.svg"
+        alt="Animated GIF"
+        class="flex gap-4 relative"
+      />
+
+      <div class="button-container">
+        <a href="/admin/login" class="login-button">Login</a>
+        <a href="/admin/signup" class="signup-button">Sign Up</a>
+      </div>
+    </div>
+  </body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script type="module" src="/js/home.js"></script>
 </body>
 <%- include('includes/footer') %>

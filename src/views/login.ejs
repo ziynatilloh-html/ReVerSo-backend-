@@ -1,5 +1,47 @@
 <%- include('includes/header') %>
+
+<link rel="stylesheet" type="text/css" href="/css/login.css" />
+
 <body>
-  <div style="font-size: large">Login</div>
+  <form class="login-container" action="/admin/login" method="POST">
+    <div class="login-frame">
+      <div class="login-top">
+        <img
+          src="/images/login-illustration.png"
+          alt="Login Illustration"
+          class="login-icon"
+        />
+        <h2>Login</h2>
+      </div>
+
+      <div class="login-input-frame">
+        <div class="login-input-container">
+          <input
+            type="text"
+            name="memberNick"
+            class="member-nick"
+            placeholder="Username"
+            required
+          />
+        </div>
+        <div class="login-input-container">
+          <input
+            type="password"
+            name="memberPassword"
+            class="member-password"
+            placeholder="Password"
+            required
+          />
+        </div>
+      </div>
+
+      <button class="login-btn btn" name="login" type="submit">Login</button>
+
+      <p class="signup-text">
+        Do not have an account? <a href="/admin/signup">Sign-up</a>
+      </p>
+    </div>
+  </form>
 </body>
+
 <%- include('includes/footer') %>
