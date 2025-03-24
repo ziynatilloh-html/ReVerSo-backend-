@@ -130,20 +130,32 @@
   transition: all 0.3s ease-in-out;
 }
 
+.login-button,
+.signup-button {
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
 .login-button {
-  background: linear-gradient(to right, #8c9096, #8cda05);
+  background: linear-gradient(135deg, #a7c957, #6a994e);
 }
 
 .login-button:hover {
-  background: linear-gradient(to right, #1e40af, #172554);
+  background: linear-gradient(135deg, #6a994e, #a7c957);
   transform: scale(1.05);
 }
 
 .signup-button {
-  background: linear-gradient(to right, #5a645e, #05c1ff);
+  background: linear-gradient(135deg, #4a90e2, #2a63bc);
 }
 
 .signup-button:hover {
-  background: linear-gradient(to right, #166534, #0f3e23);
+  background: linear-gradient(135deg, #2a63bc, #4a90e2);
   transform: scale(1.05);
 }
