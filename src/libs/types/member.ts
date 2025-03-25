@@ -17,6 +17,7 @@ export interface Member {
   memberPoints: number;
   createdAt: Date;
   updatedAt: Date;
+  authProvider?: "LOCAL" | "GOOGLE";
 }
 
 export interface MemberInput {
@@ -29,12 +30,14 @@ export interface MemberInput {
   memberDesc?: string;
   memberImage?: string;
   memberPoints?: number;
+  authProvider?: "LOCAL" | "GOOGLE";
 }
 export interface LoginInput {
   memberNick: string;
   memberPhone: string;
   memberEmail: string;
   memberPassword: string;
+  authProvider?: "LOCAL" | "GOOGLE";
 }
 
 export interface AdminRequest extends Request {

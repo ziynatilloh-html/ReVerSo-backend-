@@ -12,6 +12,7 @@ export enum HttpCode {
 
 // Message enum with user-friendly error messages
 export enum Message {
+  EXISTING_MEMBERNICK = "Member exists in the server",
   SOMETHING_WENT_WRONG = "Something went wrong",
   NO_DATA_FOUND = "No data is found!",
   CREATE_FAILED = "Create is failed!",

@@ -3,10 +3,13 @@ import path from "path";
 import router from "./router";
 import routerAdmin from "./router-admin";
 import morgan from "morgan";
+import authRouter from "./router.auth"; // Adjust the path as necessary
 import { MORGAN_FORMAT } from "./libs/types/config";
 import session from "express-session";
 import ConnectMongoDB from "connect-mongodb-session";
 import { T } from "./libs/types/common";
+import passport from "passport";
+import "./libs/utils/passport";
 
 const MongoDBStore = ConnectMongoDB(session);
 const store = new MongoDBStore({
@@ -33,6 +36,8 @@ app.use(
     saveUninitialized: true,
   })
 );
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(function (req, res, next) {
   const sessionInstance = req.session as T;
   res.locals.member = sessionInstance.member;
@@ -46,4 +51,7 @@ app.set("view engine", "ejs");
 /** 4-ROUTERS **/
 app.use("/admin", routerAdmin);
 app.use("/", router);
+//GOOGLE AUTH
+app.use("/auth", authRouter);
+
 export default app;

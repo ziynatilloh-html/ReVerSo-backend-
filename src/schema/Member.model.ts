@@ -46,6 +46,11 @@ const memberSchema = new Schema(
       type: Number,
       default: 0,
     },
+    authProvider: {
+      type: String,
+      enum: ["GOOGLE", "LOCAL"],
+      default: "LOCAL",
+    },
   },
   { timestamps: true }
 );

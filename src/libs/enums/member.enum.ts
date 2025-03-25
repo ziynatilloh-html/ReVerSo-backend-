@@ -7,3 +7,7 @@ export enum MemberStatus {
   BLOCKED = "BLOCKED",
   DELETED = "DELETED",
 }
+export enum AuthProvider {
+  LOCAL = "LOCAL",
+  GOOGLE = "GOOGLE",
+}

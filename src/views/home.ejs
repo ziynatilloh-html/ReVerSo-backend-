@@ -12,7 +12,7 @@
     <div class="card-container bg-white shadow-lg">
       <div
         class="card bg-blue-500 rounded-2xl h-[300px] w-full top-0 left-0"
-        style="background-image: url('./img/adminlogo.jpg')"
+        style="background-image: url('/img/adminlogo.jpg')"
       >
         <div class="card-content">
           <div class="card-title">Admin Panel</div>
@@ -26,7 +26,7 @@
       </div>
       <div
         class="card bg-teal-600 rounded-2xl border-white h-[295px] w-[282px] top-[302px] left-0.5 bottom-0"
-        style="background-image: url('./img/modern.jpg')"
+        style="background-image: url('/img/modern.jpg')"
       >
         <div class="card-content">
           <div class="card-title">Product Control</div>
@@ -41,7 +41,7 @@
       </div>
       <div
         class="card-d3 bg-teal-600 rounded-2xl border-4 hover:border-0 border-white h-[334px] w-[334px] right-0 bottom-0"
-        style="background-image: url('./img/product.jpg')"
+        style="background-image: url('/img/product.jpg')"
       >
         <div class="card-content">
           <div class="card-title">Billing Check</div>
@@ -65,6 +65,36 @@
         <a href="/admin/signup" class="signup-button">Sign Up</a>
         <a href="/admin/login" class="login-button">Login</a>
       </div>
+      <a
+        href="/auth/google"
+        class="google-login-btn"
+        style="text-decoration: none"
+      >
+        <div
+          style="
+            position: absolute;
+            display: flex;
+            width: 39%;
+            top: 86%;
+            right: 30%;
+            height: 12%;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid #ccc;
+            padding: -2px 14px;
+            border-radius: 22px;
+            background: white;
+            cursor: pointer;
+          "
+        >
+          <img
+            src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+            alt="Google Icon"
+            style="width: 30px; height: 31px; margin: 0; margin-left: 5px"
+          />
+          <span style="color: #555; font-weight: 500">Sign in with Google</span>
+        </div>
+      </a>
     </div>
   </body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
