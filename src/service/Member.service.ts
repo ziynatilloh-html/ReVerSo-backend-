@@ -78,7 +78,7 @@ class MemberService {
       member.memberPassword
     );
     if (!isMatch)
-      throw new Errors(HttpCode.UNAUTHORIZED, Message.NO_MEMBER_FOUND);
+      throw new Errors(HttpCode.UNAUTHORIZED, Message.WRONG_PASSWORD);
     return await this.memberModel.findOne(member._id).exec();
   }
 }

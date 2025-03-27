@@ -19,18 +19,26 @@ body {
   padding: 30px;
   border-radius: 20px;
   text-align: center;
-  width: 350px;
+  width: 420px;
   backdrop-filter: blur(10px);
 }
 
 .login-top img {
-  width: 80px;
-  margin-bottom: 10px;
+  border-radius: 25px;
+  width: 162px;
+  margin-bottom: 18px;
 }
 
 h2 {
   color: white;
   margin-bottom: 20px;
+}
+
+label {
+  font-size: 14px;
+  margin-bottom: 5px;
+  display: flex;
+  color: white;
 }
 
 .login-input-container {
@@ -69,4 +77,65 @@ button:hover {
 .signup-text a {
   color: #ffcc00;
   text-decoration: none;
+}
+
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-wrapper input {
+  width: 100%;
+  padding-right: 40px;
+}
+
+.password-wrapper .eye-icon {
+  position: absolute;
+  right: 12px;
+  color: #666;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  transition: opacity 0.3s ease;
+}
+
+.password-wrapper .eye-icon svg {
+  width: 100%;
+  color: #4095fc;
+  height: 100%;
+  fill: none;
+  stroke: #666;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.password-wrapper .eye-icon .eye-outline {
+  stroke: #666;
+  color: aquamarine;
+}
+
+.password-wrapper .eye-icon svg path.eye-strike {
+  stroke: red;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-dasharray: 20;
+  stroke-dashoffset: 0;
+}
+
+.password-wrapper .eye-icon.eye-closed svg path.eye-strike {
+  display: block;
+  opacity: 1 !important;
+}
+.thumbnail-desc {
+  color: #fff;
+  font-family: "Mukta Malar";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  padding-top: 11px;
 }

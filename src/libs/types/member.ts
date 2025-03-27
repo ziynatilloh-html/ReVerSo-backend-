@@ -15,6 +15,7 @@ export interface Member {
   memberDesc?: string;
   memberImage?: string;
   memberPoints: number;
+  memberEmail?: string;
   createdAt: Date;
   updatedAt: Date;
   authProvider?: "LOCAL" | "GOOGLE";
@@ -28,6 +29,7 @@ export interface MemberInput {
   memberPassword: string;
   memberAddress?: string;
   memberDesc?: string;
+  memberEmail?: string;
   memberImage?: string;
   memberPoints?: number;
   authProvider?: "LOCAL" | "GOOGLE";
