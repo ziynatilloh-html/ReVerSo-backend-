@@ -26,3 +26,16 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
+function switchLoginInput() {
+  const selected = document.getElementById("loginType").value;
+  const input = document.getElementById("loginInput");
+
+  input.name = selected;
+
+  input.placeholder =
+    selected === "memberNick"
+      ? "Enter your nickname"
+      : selected === "memberPhone"
+      ? "Enter your phone number"
+      : "Enter your email";
+}

@@ -22,7 +22,9 @@ body {
   width: 420px;
   backdrop-filter: blur(10px);
 }
-
+.login-btn {
+  background: linear-gradient(135deg, #7eab15, #225107);
+}
 .login-top img {
   border-radius: 25px;
   width: 162px;
@@ -138,4 +140,29 @@ button:hover {
   font-weight: 400;
   line-height: normal;
   padding-top: 11px;
+}
+/* Style for login dropdown */
+.login-type-dropdown {
+  padding: 3px 3px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 11px;
+  background-color: white;
+  color: #333;
+  appearance: revert-layer;
+  margin-bottom: 15px;
+  outline: none;
+  transition: border 0.3s ease;
+  position: absolute;
+  bottom: 46%;
+  right: 7%;
+}
+
+.login-type-dropdown:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+}
+
+.login-type-dropdown option {
+  padding: 8px;
 }

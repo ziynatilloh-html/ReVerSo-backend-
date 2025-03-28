@@ -24,6 +24,7 @@ class MemberService {
   }
   public async login(input: LoginInput): Promise<Member> {
     // TODO: Consider member status later
+
     const member = await this.memberModel
       .findOne({
         $or: [
@@ -62,6 +63,7 @@ class MemberService {
     }
   }
   public async processLogin(input: LoginInput): Promise<Member> {
+    console.log("Login input:", input);
     const member = await this.memberModel
       .findOne({
         $or: [
@@ -72,11 +74,13 @@ class MemberService {
       })
       .select("+memberPassword")
       .exec();
+    console.log("member", member);
     if (!member) throw new Errors(HttpCode.NOT_FOUND, Message.NO_MEMBER_FOUND);
     const isMatch = await bcrypt.compare(
       input.memberPassword,
       member.memberPassword
     );
+    console.log("member", member);
     if (!isMatch)
       throw new Errors(HttpCode.UNAUTHORIZED, Message.WRONG_PASSWORD);
     return await this.memberModel.findOne(member._id).exec();
