@@ -2,7 +2,12 @@ import { NextFunction, Request, Response } from "express";
 import { T } from "../libs/types/common";
 import MemberService from "../service/Member.service";
 import { MemberType } from "../libs/enums/member.enum";
-import { AdminRequest, LoginInput, MemberInput } from "../libs/types/member";
+import {
+  AdminRequest,
+  LoginInput,
+  MemberInput,
+  PasswordResetRequestInput,
+} from "../libs/types/member";
 import Errors, { Message } from "../libs/types/Error";
 
 const adminController: T = {};
@@ -33,7 +38,23 @@ adminController.getSignup = (req: Request, res: Response) => {
     res.redirect("/admin");
   }
 };
-
+adminController.getRequestPassword = (req: Request, res: Response) => {
+  try {
+    res.render("request-password");
+  } catch (err) {
+    console.log("Error, getRequestPassword:", err);
+    res.redirect("/admin/login");
+  }
+};
+adminController.getResetPassword = (req: Request, res: Response) => {
+  try {
+    const { token } = req.params;
+    res.render("reset-password", { token });
+  } catch (err) {
+    console.log("Error, getResetPassword:", err);
+    res.redirect("/admin/login");
+  }
+};
 //Back-end side server rendering
 
 adminController.processLogin = async (req: AdminRequest, res: Response) => {
@@ -112,4 +133,46 @@ adminController.verifyAdmin = (
     res.send(`<script>alert("${message}")<script>`);
   }
 };
+
+//Password resetting//
+adminController.requestPassword = async (req: Request, res: Response) => {
+  try {
+    console.log("Password,requestPassword");
+    const input: PasswordResetRequestInput = req.body;
+
+    const memberService = new MemberService();
+    await memberService.requestPassword(input);
+
+    res.render("request-password", {
+      result: { message: "✅ Reset link sent to your email!", error: false },
+    });
+  } catch (err) {
+    console.log("Error, requestPassword:", err);
+    const message =
+      err instanceof Errors ? err.message : Message.SOMETHING_WENT_WRONG;
+
+    // ✅ Properly re-render with error for JS/EJS to read
+    res.render("request-password", {
+      result: { message, error: true },
+    });
+  }
+};
+adminController.resetPassword = async (req: Request, res: Response) => {
+  try {
+    console.log("resetPassword");
+    const input = req.params.token;
+    console.log("Reset input received:", input);
+    const { newPassword } = req.body;
+
+    const memberService = new MemberService();
+    const result = await memberService.resetPassword(input, newPassword);
+    res.render("login", { result });
+  } catch (err) {
+    console.log("Error, resetPassword:", err);
+    const message =
+      err instanceof Errors ? err.message : Message.SOMETHING_WENT_WRONG;
+    res.send(`<script>alert("${message}")<script>`);
+  }
+};
+
 export default adminController;

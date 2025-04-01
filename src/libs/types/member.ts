@@ -41,7 +41,16 @@ export interface LoginInput {
   memberPassword: string;
   authProvider?: "LOCAL" | "GOOGLE";
 }
-
+export interface PasswordResetRequestInput {
+  memberEmail?: string;
+  memberPhone?: string;
+  memberNick?: string;
+}
+export interface PasswordResetInput {
+  memberNick?: string;
+  token: string;
+  newPassword: string;
+}
 export interface AdminRequest extends Request {
   member: Member;
   session: Session & { member: Member };

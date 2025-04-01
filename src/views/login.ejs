@@ -3,6 +3,19 @@
 <link rel="stylesheet" type="text/css" href="/css/login.css" />
 
 <body>
+  <% if (typeof result !== 'undefined') { %>
+  <div class="signup-text" style="margin-bottom: 10px; text-align: center">
+    <% if (result.error) { %>
+    <span style="color: red"><%= result.message %></span>
+    <% } else { %>
+    <span style="color: limegreen"><%= result.message %></span>
+    <% } %>
+  </div>
+  <% } %>
+
+  <form class="login-container" action="/admin/request-password" method="POST">
+    <!-- your form contents -->
+  </form>
   <form class="login-container" action="/admin/login" method="POST" novalidate>
     <div class="login-frame">
       <div class="login-top">
@@ -89,9 +102,13 @@
       <p class="signup-text">
         Do not have an account? <a href="/admin/signup">Sign-up</a>
       </p>
+      <p>
+        <a href="/admin/request-password" style="text-decoration: underline"
+          >Forgot your password?</a
+        >
+      </p>
     </div>
   </form>
-
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="/js/login.js"></script>
 </body>

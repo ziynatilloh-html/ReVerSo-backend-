@@ -46,6 +46,12 @@ const memberSchema = new Schema(
       type: Number,
       default: 0,
     },
+    passwordResetToken: {
+      type: String,
+    },
+    passwordResetExpires: {
+      type: Number,
+    },
     authProvider: {
       type: String,
       enum: ["GOOGLE", "LOCAL"],

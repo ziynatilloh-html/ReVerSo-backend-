@@ -21,6 +21,14 @@ routerAdmin
 routerAdmin.get("/logout", adminController.processLogout);
 routerAdmin.get("/check-me", adminController.checkAuthSession);
 
+routerAdmin
+  .get("/request-password", adminController.getRequestPassword)
+  .post("/request-password", adminController.requestPassword);
+
+routerAdmin
+  .get("/reset-password/:token", adminController.getResetPassword)
+  .post("/reset-password/:token", adminController.resetPassword);
+
 /* Product */
 routerAdmin.get(
   "/products/all",
