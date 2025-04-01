@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const usernameInput = document.querySelector(".member-nick");
   const passwordInput = document.querySelector(".member-password");
 
-  // Validate form before submit
   loginForm.addEventListener("submit", function (event) {
     const username = usernameInput.value.trim();
     const password = passwordInput.value.trim();

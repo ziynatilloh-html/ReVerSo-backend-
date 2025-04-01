@@ -5,12 +5,11 @@ import {
   LoginInput,
   Member,
   MemberInput,
-  PasswordResetInput,
   PasswordResetRequestInput,
 } from "../libs/types/member";
 import * as bcrypt from "bcryptjs";
 import * as crypto from "crypto";
-import { mailSender } from "../libs/types/common";
+import { sendResetPasswordEmail } from "../libs/utils/email";
 
 class MemberService {
   private readonly memberModel;
@@ -65,13 +64,12 @@ class MemberService {
       const result = await this.memberModel.create(input);
       result.memberPassword = "";
       return result;
-    } catch (error: any) {
-      console.error("processSignup Error:", error);
+    } catch (err) {
+      console.error("processSignup Error:", err);
       throw new Errors(HttpCode.BAD_REQUEST, Message.CREATE_FAILED);
     }
   }
   public async processLogin(input: LoginInput): Promise<Member> {
-    console.log("Login input:", input);
     const member = await this.memberModel
       .findOne({
         $or: [
@@ -82,75 +80,52 @@ class MemberService {
       })
       .select("+memberPassword")
       .exec();
-    console.log("member", member);
     if (!member) throw new Errors(HttpCode.NOT_FOUND, Message.NO_MEMBER_FOUND);
     const isMatch = await bcrypt.compare(
       input.memberPassword,
       member.memberPassword
     );
-    console.log("member", member);
     if (!isMatch)
       throw new Errors(HttpCode.UNAUTHORIZED, Message.WRONG_PASSWORD);
     return await this.memberModel.findOne(member._id).exec();
   }
   public async requestPassword(
     input: PasswordResetRequestInput
-  ): Promise<void> {
+  ): Promise<{ message: string }> {
     const member = await this.memberModel.findOne({
-      $or: [
-        { memberNick: input.memberNick },
-        { memberPhone: input.memberPhone },
-        { memberEmail: input.memberEmail },
-      ],
+      memberNick: input.memberNick,
     });
 
     if (!member) throw new Errors(HttpCode.NOT_FOUND, Message.NO_MEMBER_FOUND);
 
     const token = crypto.randomBytes(32).toString("hex");
     const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
-    const expires = Date.now() + 1000 * 60 * 30; // 30 min
+    const expires = Date.now() + 1000 * 60 * 30;
 
     member.passwordResetToken = hashedToken;
     member.passwordResetExpires = expires;
 
     await member.save();
-    console.log("📧 Sending email to:", member.memberEmail);
-    const resetLink = `http://localhost:3007/admin/reset-password/${token}`;
-    console.log("resetLink", resetLink);
-    await mailSender.sendMail({
-      to: member.memberEmail,
-      subject: "Password Reset Request",
-      html: `
-      <p>Hi ${member.memberNick},</p>
-      <p>You requested a password reset. Click the link below to reset your password:</p>
-      <a href="${resetLink}">Reset Password</a>
-      <p>This link will expire in 30 minutes.</p>
-    `,
-    });
+    await sendResetPasswordEmail(member.memberEmail, member.memberNick, token);
+    return { message: Message.RESET_LINK_SENT };
   }
-
-  // RESET PASSWORD
   public async resetPassword(
     token: string,
     newPassword: string
   ): Promise<void> {
     const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
-
     const member = await this.memberModel.findOne({
       passwordResetToken: hashedToken,
       passwordResetExpires: { $gt: Date.now() },
     });
-
     if (!member) {
       throw new Errors(HttpCode.BAD_REQUEST, Message.INVALID_OR_EXPIRED_TOKEN);
     }
-
     member.memberPassword = await bcrypt.hash(newPassword, 10);
     member.passwordResetToken = undefined;
     member.passwordResetExpires = undefined;
 
     await member.save();
-    console.log("✅ Password reset successful for:", member.memberNick);
   }
 }
 export default MemberService;

@@ -40,10 +40,11 @@ adminController.getSignup = (req: Request, res: Response) => {
 };
 adminController.getRequestPassword = (req: Request, res: Response) => {
   try {
+    console.log("getRequestPassword");
     res.render("request-password");
   } catch (err) {
     console.log("Error, getRequestPassword:", err);
-    res.redirect("/admin/login");
+    res.redirect("/admin");
   }
 };
 adminController.getResetPassword = (req: Request, res: Response) => {
@@ -85,9 +86,7 @@ adminController.processSignup = async (req: AdminRequest, res: Response) => {
     const memberService = new MemberService();
     const result = await memberService.processSignup(newMember);
     req.session.member = result;
-    req.session.save(function () {
-      res.send(result);
-    });
+    res.send(result);
   } catch (err) {
     console.log("Error, processSignup:", err);
     const message =
@@ -137,21 +136,18 @@ adminController.verifyAdmin = (
 //Password resetting//
 adminController.requestPassword = async (req: Request, res: Response) => {
   try {
-    console.log("Password,requestPassword");
+    console.log("requestPassword");
     const input: PasswordResetRequestInput = req.body;
-
     const memberService = new MemberService();
-    await memberService.requestPassword(input);
+    const result = await memberService.requestPassword(input);
 
     res.render("request-password", {
-      result: { message: "✅ Reset link sent to your email!", error: false },
+      result: { ...result, error: false },
     });
   } catch (err) {
     console.log("Error, requestPassword:", err);
     const message =
       err instanceof Errors ? err.message : Message.SOMETHING_WENT_WRONG;
-
-    // ✅ Properly re-render with error for JS/EJS to read
     res.render("request-password", {
       result: { message, error: true },
     });
@@ -161,7 +157,6 @@ adminController.resetPassword = async (req: Request, res: Response) => {
   try {
     console.log("resetPassword");
     const input = req.params.token;
-    console.log("Reset input received:", input);
     const { newPassword } = req.body;
 
     const memberService = new MemberService();

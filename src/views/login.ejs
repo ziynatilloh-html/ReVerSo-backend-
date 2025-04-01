@@ -3,16 +3,6 @@
 <link rel="stylesheet" type="text/css" href="/css/login.css" />
 
 <body>
-  <% if (typeof result !== 'undefined') { %>
-  <div class="signup-text" style="margin-bottom: 10px; text-align: center">
-    <% if (result.error) { %>
-    <span style="color: red"><%= result.message %></span>
-    <% } else { %>
-    <span style="color: limegreen"><%= result.message %></span>
-    <% } %>
-  </div>
-  <% } %>
-
   <form class="login-container" action="/admin/request-password" method="POST">
     <!-- your form contents -->
   </form>

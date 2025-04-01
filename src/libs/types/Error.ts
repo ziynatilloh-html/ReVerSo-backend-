@@ -23,6 +23,8 @@ export enum Message {
   NOT_AUTHENTICATED = "Sorry, but you are not authentificated sign-up first!",
   MISSING_MEMBER_NICK_PHONE_EMAIL = "MISSING_MEMBER_NICK_PHONE_EMAIL",
   INVALID_OR_EXPIRED_TOKEN = "Token has been expired or invalid",
+  RESET_LINK_SENT = "✅ Reset link sent to your email!",
+  PASSWORD_CHANGED = "✅ Your password has been changed successfully!",
 }
 
 // Custom error class extending the built-in Error class
