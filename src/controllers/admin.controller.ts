@@ -20,6 +20,16 @@ adminController.goHome = (req: Request, res: Response) => {
     res.redirect("/admin");
   }
 };
+
+//TEST VERSION //
+adminController.getDashboard = (req: Request, res: Response) => {
+  try {
+    res.render("dashboard");
+  } catch (err) {
+    console.log("Error loading dashboard:", err);
+    res.redirect("/admin/login");
+  }
+};
 adminController.getLogin = (req: Request, res: Response) => {
   try {
     console.log("getLogin");

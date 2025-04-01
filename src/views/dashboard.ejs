@@ -1,0 +1,52 @@
+<%- include('includes/header') %>
+<link rel="stylesheet" href="/css/dashboard.css" />
+
+<body class="dashboard-page">
+  <div class="dashboard-sidebar">
+    <!-- Logo and Tagline -->
+    <div class="sidebar-header">
+      <img src="" alt="ReVer:So logo" />
+      <h3>ReVer:So makes you You</h3>
+    </div>
+
+    <!-- Navigation Links -->
+    <nav class="sidebar-nav">
+      <a href="/admin/dashboard" class="nav-item">
+        <i class="fas fa-house"></i> Dashboard
+      </a>
+      <a href="/admin/users" class="nav-item">
+        <i class="fas fa-user-group"></i> Users
+      </a>
+      <a href="/admin/products" class="nav-item">
+        <i class="fas fa-box-open"></i> Products
+      </a>
+      <a href="/admin/billing" class="nav-item">
+        <i class="fas fa-receipt"></i> Billing
+      </a>
+      <a href="/admin/settings" class="nav-item">
+        <i class="fas fa-gear"></i> Settings and profile
+      </a>
+    </nav>
+  </div>
+
+  <div class="dashboard-page__main">
+    <div class="dashboard-page__header">
+      <h2 class="dashboard-page__header-title">
+        Welcome to your dashboard, Rever:so shop
+      </h2>
+      <p class="dashboard-page__header-subtext">Seeing beyond surface...</p>
+    </div>
+
+    <div class="dashboard-page__content">
+      <div class="dashboard-page__feature-grid">
+        <div class="dashboard-page__feature-card">
+          <h3 class="dashboard-page__feature-title">Add new products</h3>
+          <p class="dashboard-page__feature-desc">Once you move on...</p>
+        </div>
+        ...
+      </div>
+    </div>
+  </div>
+</body>
+
+<%- include('includes/footer') %>

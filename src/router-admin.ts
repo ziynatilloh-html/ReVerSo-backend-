@@ -49,4 +49,8 @@ routerAdmin.post(
   productsController.updateChosenProduct
 );
 
+//TEST//
+
+routerAdmin.get("/dashboard", adminController.getDashboard);
+
 export default routerAdmin;
