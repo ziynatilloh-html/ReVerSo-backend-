@@ -66,6 +66,15 @@ adminController.getResetPassword = (req: Request, res: Response) => {
     res.redirect("/admin/login");
   }
 };
+adminController.adminSupportPage = (req: Request, res: Response) => {
+  try {
+    console.log("adminSupportPage");
+    res.render("admin-support");
+  } catch (err) {
+    console.log("Error, adminSupportPage:", err);
+    res.redirect("/admin/dashboard");
+  }
+};
 //Back-end side server rendering
 
 adminController.processLogin = async (req: AdminRequest, res: Response) => {
@@ -76,8 +85,12 @@ adminController.processLogin = async (req: AdminRequest, res: Response) => {
     const memberService = new MemberService();
     const result = await memberService.processLogin(input);
     req.session.member = result;
-    req.session.save(function () {
-      res.send(result);
+    req.session.save((err) => {
+      if (err) {
+        console.error("Session save error:", err);
+        return res.redirect("/login");
+      }
+      return res.redirect("/admin/dashboard"); // ✅ Only one response here
     });
   } catch (err) {
     console.log("Error processLogin:", err);

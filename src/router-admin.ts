@@ -29,6 +29,8 @@ routerAdmin
   .get("/reset-password/:token", adminController.getResetPassword)
   .post("/reset-password/:token", adminController.resetPassword);
 
+routerAdmin.get("/admin-support", adminController.adminSupportPage);
+
 /* Product */
 routerAdmin.get(
   "/products/all",

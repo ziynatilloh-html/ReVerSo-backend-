@@ -1,0 +1,55 @@
+/* === Support Page & Cards (Shared with Dashboard) === */
+
+.dashboard-page__header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 20px;
+}
+
+.dashboard-page__header-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #1e1e1e;
+}
+
+.dashboard-page__header-subtext {
+  color: #777;
+  font-size: 15px;
+}
+
+/* Feature Card Grid */
+.dashboard-page__feature-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+/* Card style */
+.dashboard-page__feature-card {
+  border-radius: 16px;
+  padding: 20px;
+  width: 100%;
+  max-width: 400px;
+  min-height: 180px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  background-color: #e8f0fe;
+  transition: transform 0.2s ease;
+}
+
+.dashboard-page__feature-card:hover {
+  transform: translateY(-5px);
+}
+
+.dashboard-page__feature-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #1a1a1a;
+}
+
+.dashboard-page__feature-desc {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.5;
+}

@@ -1,52 +1,119 @@
 <%- include('includes/header') %>
 <link rel="stylesheet" href="/css/dashboard.css" />
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+  rel="stylesheet"
+/>
 
 <body class="dashboard-page">
+  <!-- Sidebar layout -->
   <div class="dashboard-sidebar">
-    <!-- Logo and Tagline -->
+    <!-- Logo / Title -->
     <div class="sidebar-header">
-      <img src="" alt="ReVer:So logo" />
-      <h3>ReVer:So makes you You</h3>
+      <img src="/img/logo.png" alt="ReVer:So logo" />
+      <h3>RE:verSO MAKES YOU, YOU</h3>
     </div>
 
-    <!-- Navigation Links -->
+    <!-- Sidebar navigation with collapsible sections -->
     <nav class="sidebar-nav">
-      <a href="/admin/dashboard" class="nav-item">
-        <i class="fas fa-house"></i> Dashboard
+      <div class="nav-group">
+        <button class="nav-toggle">
+          <i class="fas fa-house"></i>
+          <span>Dashboard</span>
+        </button>
+      </div>
+      <a href="#" class="nav-item">
+        <i class="fas fa-user-group"></i>
+        <span>Users</span>
       </a>
-      <a href="/admin/users" class="nav-item">
-        <i class="fas fa-user-group"></i> Users
+      <a href="#" class="nav-item">
+        <i class="fas fa-box-open"></i>
+        <span>Products</span>
       </a>
-      <a href="/admin/products" class="nav-item">
-        <i class="fas fa-box-open"></i> Products
+      <a href="#" class="nav-item">
+        <i class="fas fa-receipt"></i>
+        <span>Billing</span>
       </a>
-      <a href="/admin/billing" class="nav-item">
-        <i class="fas fa-receipt"></i> Billing
-      </a>
-      <a href="/admin/settings" class="nav-item">
-        <i class="fas fa-gear"></i> Settings and profile
+      <a href="#" class="nav-item">
+        <i class="fas fa-gear"></i>
+        <span>Settings</span>
       </a>
     </nav>
+
+    <!-- Logout at the bottom -->
+    <div class="sidebar-logout">
+      <a href="#" class="nav-item" onclick="confirmLogout(event)">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Log out</span>
+      </a>
+    </div>
   </div>
 
+  <!-- Main Content Area -->
   <div class="dashboard-page__main">
     <div class="dashboard-page__header">
-      <h2 class="dashboard-page__header-title">
-        Welcome to your dashboard, Rever:so shop
-      </h2>
-      <p class="dashboard-page__header-subtext">Seeing beyond surface...</p>
+      <div class="header-left">
+        <h2 class="dashboard-page__header-title">
+          Welcome back,<span class="highlighted"
+            ><%= member?.memberNick || 'Nick is not defined' %></span
+          >
+        </h2>
+        <p class="dashboard-page__header-subtext">
+          This is your command center to manage everything in RE:VERSO
+        </p>
+      </div>
+      <div class="header-right">
+        <form action="/admin/admin-support" method="GET">
+          <button class="support-button" type="submit">
+            <i class="fa-solid fa-headset"></i>Support
+          </button>
+        </form>
+      </div>
     </div>
 
-    <div class="dashboard-page__content">
-      <div class="dashboard-page__feature-grid">
-        <div class="dashboard-page__feature-card">
-          <h3 class="dashboard-page__feature-title">Add new products</h3>
-          <p class="dashboard-page__feature-desc">Once you move on...</p>
-        </div>
-        ...
+    <!-- Dashboard Cards Section -->
+    <div class="dashboard-page__feature-grid">
+      <div class="dashboard-page__feature-card card-blue">
+        <h3 class="dashboard-page__feature-title">Products Overview</h3>
+        <p class="dashboard-page__feature-desc">
+          Manage all items in your inventory. Add, remove or update product
+          info. Track categories, quantities and availability.
+        </p>
+      </div>
+
+      <div class="dashboard-page__feature-card card-peach">
+        <h3 class="dashboard-page__feature-title">Billing & Payments</h3>
+        <p class="dashboard-page__feature-desc">
+          Monitor all payment records, pricing plans and transactions. Configure
+          your payment integrations and customer billing details.
+        </p>
+      </div>
+
+      <div class="dashboard-page__feature-card card-mint">
+        <h3 class="dashboard-page__feature-title">User Management</h3>
+        <p class="dashboard-page__feature-desc">
+          View, filter, and control registered users. Assign roles, suspend
+          accounts, and analyze engagement metrics. Configure your payment
+        </p>
+      </div>
+
+      <div class="dashboard-page__feature-card card-pink">
+        <h3 class="dashboard-page__feature-title">Settings & Config</h3>
+        <p class="dashboard-page__feature-desc">
+          Adjust platform preferences, configure environment variables and
+          personalize your admin experience.
+        </p>
       </div>
     </div>
   </div>
+  <script>
+    function confirmLogout(e) {
+      e.preventDefault();
+      if (confirm("Are you sure you want to log out?")) {
+        window.location.href = "/admin/logout?confirmed=true";
+      }
+    }
+  </script>
 </body>
 
 <%- include('includes/footer') %>
