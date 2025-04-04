@@ -8,9 +8,8 @@
 <body class="dashboard-page">
   <!-- Sidebar layout -->
   <div class="dashboard-sidebar">
-    <!-- Logo / Title -->
     <div class="sidebar-header">
-      <img src="/img/logo.png" alt="ReVer:So logo" />
+      <img src="/img/logo.png" alt="Default logo" />
       <h3>RE:verSO MAKES YOU, YOU</h3>
     </div>
 
@@ -54,7 +53,8 @@
     <div class="dashboard-page__header">
       <div class="header-left">
         <h2 class="dashboard-page__header-title">
-          Welcome back,<span class="highlighted"
+          Welcome back,
+          <span class="highlighted"
             ><%= member?.memberNick || 'Nick is not defined' %></span
           >
         </h2>
@@ -62,7 +62,51 @@
           This is your command center to manage everything in RE:VERSO
         </p>
       </div>
-      <div class="header-right">
+      <div
+        class="header-right"
+        style="display: flex; align-items: center; gap: 1rem"
+      >
+        <!-- Profile Box -->
+        <div class="admin-profile" style="text-align: center">
+          <% if (member?.memberImage) { %>
+          <img
+            src="/uploads/members/<%= member.memberImage %>"
+            alt="Admin"
+            style="
+              width: 80px;
+              height: 80px;
+              border-radius: 50%;
+              object-fit: cover;
+              margin-right: 20px;
+              margin-top: 22px;
+            "
+          />
+          <% } else { %>
+          <img
+            src="/img/logo.png"
+            alt="Admin"
+            style="
+              width: 80px;
+              height: 80px;
+              border-radius: 50%;
+              margin-right: 20px;
+              margin-top: 22px;
+            "
+          />
+          <% } %>
+          <div
+            style="
+              font-size: 0.8rem;
+              margin-top: 4px;
+              font-weight: 500;
+              margin-right: 20px;
+            "
+          >
+            <%= member?.memberNick || "Admin" %>
+          </div>
+        </div>
+
+        <!-- Support button -->
         <form action="/admin/admin-support" method="GET">
           <button class="support-button" type="submit">
             <i class="fa-solid fa-headset"></i>Support

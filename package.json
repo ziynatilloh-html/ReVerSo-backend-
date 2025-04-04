@@ -13,6 +13,7 @@
   "author": "MIT",
   "license": "ISC",
   "dependencies": {
+    "@types/helmet": "^4.0.0",
     "anime": "^0.1.2",
     "bcryptjs": "^2.4.3",
     "connect-mongodb-session": "^3.1.1",
@@ -20,6 +21,7 @@
     "ejs": "^3.1.6",
     "express": "^4.17.3",
     "express-session": "^1.17.3",
+    "helmet": "^8.1.0",
     "moment": "^2.29.4",
     "mongodb": "^3.2.6",
     "mongoose": "^6.2.9",

@@ -13,13 +13,18 @@ $(document).ready(function () {
         if (!validImageTypes.includes(fileType)) {
           alert("Please insert only JPEG, JPG, or PNG images!");
           $(".upload-img-frame")
-            .attr("src", "/img/signup.png")
+            .attr("src", "/img/signup.jpg")
             .removeClass("success");
           return;
         }
 
-        const imageURL = URL.createObjectURL(uploadFile);
-        $(".upload-img-frame").attr("src", imageURL).addClass("success");
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          $(".upload-img-frame")
+            .attr("src", e.target.result)
+            .addClass("success");
+        };
+        reader.readAsDataURL(uploadFile);
 
         $(this).siblings(".upload-name").val(uploadFile.name);
       }

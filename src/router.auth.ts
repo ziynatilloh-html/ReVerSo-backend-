@@ -11,8 +11,8 @@ router.get(
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    successRedirect: "/admin", // or wherever you want
-    failureRedirect: "/admin/login", // show login on failure
+    successRedirect: "/admin/dashboard",
+    failureRedirect: "/admin/login",
   })
 );
 

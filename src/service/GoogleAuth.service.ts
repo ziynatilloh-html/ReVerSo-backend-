@@ -21,32 +21,29 @@ class GoogleAuthService {
         .findOne({ memberType: MemberType.ADMIN })
         .exec();
       if (existingAdmin) {
-        throw new Errors(HttpCode.BAD_REQUEST, Message.EXISTING_MEMBERNICK);
+        console.log("Logging in with existing admin:", existingAdmin);
+        return existingAdmin.toJSON();
       }
-
-      const existingGoogleUser = await this.memberModel
-        .findOne({ googleId: profile.id })
-        .exec();
-      if (existingGoogleUser) {
-        return existingGoogleUser.toJSON();
-      }
-
       const created = await this.memberModel.create({
-        memberNick: profile.displayName || "google_admin",
+        memberNick: profile.displayName,
         memberEmail: profile.emails?.[0]?.value,
         googleId: profile.id,
         memberType: MemberType.ADMIN,
         authProvider: AuthProvider.GOOGLE,
+        memberImage: profile.photos?.[0]?.value,
         memberStatus: MemberStatus.ACTIVE,
-        memberPhone: "000-0000-0000",
-        memberPassword: "GOOGLE_AUTH",
+        memberPhone: null,
+        memberPassword: null,
         memberPoints: 0,
         memberDesc: "",
         memberAddress: "",
       });
       return created.toJSON();
-    } catch (err) {
-      throw new Errors(HttpCode.INTERNAL_SERVER_ERROR, Message.CREATE_FAILED);
+    } catch (err: any) {
+      throw new Errors(
+        HttpCode.INTERNAL_SERVER_ERROR,
+        err?.message || Message.CREATE_FAILED
+      );
     }
   }
 }

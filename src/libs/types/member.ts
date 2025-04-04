@@ -51,6 +51,7 @@ export interface PasswordResetInput {
   token: string;
   newPassword: string;
 }
+
 export interface AdminRequest extends Request {
   member: Member;
   session: Session & { member: Member };

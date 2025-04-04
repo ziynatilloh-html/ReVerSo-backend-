@@ -13,14 +13,27 @@ googleAuthController.signupWithGoogle = async (
   profile: Profile
 ) => {
   try {
+    console.log("signupWithGoogle");
+
     const googleAuthService = new GoogleAuthService();
-    const user = await googleAuthService.signupWithGoogle(profile);
+    const member = await googleAuthService.signupWithGoogle(profile);
+
     const SessionDataInstance = req.session as SessionData;
-    SessionDataInstance.member = user;
-    req.session.member = user;
-    req.session.save(() => {
-      res.redirect("/admin");
+    SessionDataInstance.member = member;
+    req.session.member = member;
+
+    await new Promise((resolve, reject) => {
+      req.session.save((err) => {
+        if (err) {
+          console.error("Session save error:", err);
+          return reject(err);
+        }
+        console.log("✅ Session saved with member:", req.session.member);
+        resolve(null);
+      });
     });
+
+    res.redirect("/dashboard");
   } catch (err) {
     console.error("Error signupWithGoogle:", err);
     const message =

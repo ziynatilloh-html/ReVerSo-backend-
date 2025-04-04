@@ -41,6 +41,19 @@ body.dashboard-page {
   text-align: center;
   color: #2c2c2c;
 }
+.admin-profile img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.admin-profile div {
+  font-size: 0.8rem;
+  margin-top: 4px;
+  text-align: center;
+  font-weight: 500;
+}
 
 .sidebar-nav {
   margin-top: 30px;

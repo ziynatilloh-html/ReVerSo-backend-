@@ -20,11 +20,13 @@ const store = new MongoDBStore({
 const app = express();
 
 app.use(express.static(path.join(__dirname, "public")));
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan(MORGAN_FORMAT));
 
 /** 2-SESSIONS **/
+
 app.use(
   session({
     secret: String(process.env.SESSION_SECRET),
@@ -40,10 +42,17 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(function (req, res, next) {
   const sessionInstance = req.session as T;
-  res.locals.member = sessionInstance.member;
+
+  if (req.isAuthenticated() && req.user) {
+    res.locals.member = req.user; // ✅ Passport user
+  } else if (sessionInstance.member) {
+    res.locals.member = sessionInstance.member; // ✅ Custom session user
+  } else {
+    res.locals.member = null;
+  }
+
   next();
 });
-
 /** 3-VIEWS **/
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");

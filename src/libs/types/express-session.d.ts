@@ -1,4 +1,4 @@
-import { Member } from "../libs/types/member";
+import { Member } from "./member";
 
 declare module "express-session" {
   interface SessionData {

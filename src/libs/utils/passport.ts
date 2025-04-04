@@ -1,14 +1,9 @@
 import passport from "passport";
-import { Strategy as GoogleStrategy, Profile } from "passport-google-oauth20";
+import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import dotenv from "dotenv";
-import googleAuthController from "../../controllers/googleAuth.controller";
-import SessionData from "../types/express-session";
-
-dotenv.config();
-
 import GoogleAuthService from "../../service/GoogleAuth.service";
 import MemberModel from "../../schema/Member.model";
-
+dotenv.config();
 passport.use(
   new GoogleStrategy(
     {
@@ -19,8 +14,8 @@ passport.use(
     async (_accessToken, _refreshToken, profile, done) => {
       try {
         const googleAuthService = new GoogleAuthService();
-        const user = await googleAuthService.signupWithGoogle(profile);
-        done(null, user);
+        const member = await googleAuthService.signupWithGoogle(profile);
+        done(null, member);
       } catch (err) {
         console.error("Google Strategy Error:", err);
         done(err);
@@ -29,12 +24,12 @@ passport.use(
   )
 );
 
-passport.serializeUser((user: any, done) => {
-  done(null, user._id);
+passport.serializeUser((member: any, done) => {
+  done(null, member._id);
 });
 
 passport.deserializeUser(async (id, done) => {
-  const user = await MemberModel.findById(id).lean();
-  done(null, user);
+  const member = await MemberModel.findById(id).lean();
+  done(null, member);
 });
 export default passport;

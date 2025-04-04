@@ -90,7 +90,7 @@ adminController.processLogin = async (req: AdminRequest, res: Response) => {
         console.error("Session save error:", err);
         return res.redirect("/login");
       }
-      return res.redirect("/admin/dashboard"); // ✅ Only one response here
+      return res.redirect("/admin/dashboard");
     });
   } catch (err) {
     console.log("Error processLogin:", err);
@@ -105,9 +105,11 @@ adminController.processSignup = async (req: AdminRequest, res: Response) => {
 
     const newMember: MemberInput = req.body;
     newMember.memberType = MemberType.ADMIN;
+    newMember.memberImage = req.file?.filename;
 
     const memberService = new MemberService();
     const result = await memberService.processSignup(newMember);
+
     req.session.member = result;
     res.send(result);
   } catch (err) {
