@@ -17,10 +17,14 @@ class ProductService {
   /** SPA */
 
   /** SSR */
+  public async getAllProducts(): Promise<Product[]> {
+    const result = await this.productModel.find().exec();
+    if (!result) throw new Errors(HttpCode.NOT_FOUND, Message.NO_DATA_FOUND);
+    return result;
+  }
 
   public async createNewProduct(input: ProductInput): Promise<Product> {
     try {
-      console.log("create input:", input);
       return await this.productModel.create(input);
     } catch (err) {
       console.error("Error, model:createNewProduct:", err);
