@@ -1,0 +1,35 @@
+<!-- views/includes/navbar.ejs -->
+<div class="dashboard-navbar">
+  <div class="dashboard-page__header">
+    <!-- Left Side: Welcome Message -->
+    <div class="header-left">
+      <h2 class="dashboard-page__header-title">
+        Welcome back,
+        <span class="highlighted"
+          ><%= member?.memberNick || 'Nick is not defined' %></span
+        >
+      </h2>
+      <p class="dashboard-page__header-subtext">
+        This is your command center to manage everything in RE:VERSO
+      </p>
+    </div>
+
+    <!-- Right Side: Profile + Support -->
+    <div class="header-right">
+      <div class="admin-profile">
+        <% if (member?.memberImage) { %>
+        <img src="/uploads/members/<%= member.memberImage %>" alt="Admin" />
+        <% } else { %>
+        <img src="/img/logo.png" alt="Admin" />
+        <% } %>
+        <div><%= member?.memberNick || "Admin" %></div>
+      </div>
+
+      <form action="/admin/admin-support" method="GET">
+        <button class="support-button" type="submit">
+          <i class="fa-solid fa-headset"></i>Support
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

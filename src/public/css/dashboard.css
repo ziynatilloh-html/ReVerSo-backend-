@@ -7,6 +7,117 @@ body.dashboard-page {
   background: #f9f8f6;
 }
 
+.btn-primary {
+  background-color: #48b98dcc;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #1f2a73;
+}
+
+.btn-secondary {
+  background-color: #f5f5f5;
+  color: #333;
+  border: 1px solid #ccc;
+}
+
+.btn-secondary:hover {
+  background-color: #ddd;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid #48b98dcc;
+  color: #48b98dcc;
+}
+
+.btn-outline:hover {
+  background-color: #e8f0fe;
+}
+
+.dashboard-layout {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.dashboard-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #f9f8f6;
+}
+
+/* === Navbar/Header Section === */
+.dashboard-navbar {
+  width: 100%;
+  padding: 0px 40px;
+  background-color: #f9f8f6;
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px solid #e5e3dc;
+  padding-top: 15px;
+}
+
+.dashboard-page__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-profile img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.admin-profile div {
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-align: center;
+  margin-top: 4px;
+}
+
+/* Support Button (under avatar) */
+.support-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #48b98dcc;
+  color: #fff;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  z-index: 999;
+}
+
+.support-button:hover {
+  background-color: #684ed9;
+}
+
+.support-button:hover {
+  background-color: #684ed9;
+}
+
 /* === Sidebar === */
 .dashboard-sidebar {
   width: 250px;
@@ -41,19 +152,6 @@ body.dashboard-page {
   text-align: center;
   color: #2c2c2c;
 }
-.admin-profile img {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.admin-profile div {
-  font-size: 0.8rem;
-  margin-top: 4px;
-  text-align: center;
-  font-weight: 500;
-}
 
 .sidebar-nav {
   margin-top: 30px;
@@ -64,22 +162,8 @@ body.dashboard-page {
   flex: 1;
 }
 
-.nav-item {
-  background-color: #48b98dcc;
-  color: #ffffff;
-  border: none;
-  padding: 12px 16px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 14px;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
+.nav-item,
 .nav-toggle {
-  width: 100%;
   background-color: #48b98dcc;
   color: #ffffff;
   border: none;
@@ -92,12 +176,14 @@ body.dashboard-page {
   text-decoration: none;
   cursor: pointer;
   transition: background 0.3s ease;
+  width: 100%;
+  justify-content: flex-start;
 }
 
-.nav-item:hover,
+/* .nav-item:hover,
 .nav-toggle:hover {
   background-color: #1f2a73;
-}
+} */
 
 .nav-submenu {
   display: none;
@@ -145,20 +231,19 @@ body.dashboard-page {
 }
 
 /* === Main Content === */
+.dashboard-wrapper {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
 .dashboard-page__main {
-  margin-bottom: 190px;
-  padding: 40px;
-  background-color: #f9f8f6;
+  max-width: 1200px;
+  width: 100%;
+  padding: 40px 20px;
   display: flex;
   flex-direction: column;
   gap: 30px;
-}
-
-/* Header */
-.dashboard-page__header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
 .dashboard-page__header-title {
@@ -177,27 +262,6 @@ body.dashboard-page {
   margin-top: 4px;
 }
 
-.support-button {
-  position: absolute;
-  top: 90%;
-  right: 4%;
-  background-color: #48b98dcc;
-  color: #fff;
-  border: none;
-  padding: 10px 14px;
-  border-radius: 8px;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.support-button:hover {
-  background-color: #684ed9;
-}
-
 /* === Dashboard Cards === */
 .dashboard-page__feature-grid {
   margin-top: 2%;
@@ -206,7 +270,6 @@ body.dashboard-page {
   gap: 24px;
 }
 
-/* General card style */
 .dashboard-page__feature-card {
   border-radius: 16px;
   padding: 20px;
@@ -223,7 +286,6 @@ body.dashboard-page {
   transform: translateY(-5px);
 }
 
-/* Card title + text */
 .dashboard-page__feature-title {
   font-size: 18px;
   font-weight: 600;
@@ -237,7 +299,6 @@ body.dashboard-page {
   line-height: 1.5;
 }
 
-/* === Specific card colors (from second screenshot) === */
 .card-blue {
   background: #e8f0fe;
   color: #1a1a1a;

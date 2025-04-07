@@ -6,150 +6,132 @@
 />
 
 <body class="dashboard-page">
-  <!-- Sidebar layout -->
-  <div class="dashboard-sidebar">
-    <div class="sidebar-header">
-      <img src="/img/logo.png" alt="Default logo" />
-      <h3>RE:verSO MAKES YOU, YOU</h3>
+  <!-- Main Layout -->
+  <div class="dashboard-layout">
+    <!-- Sidebar -->
+    <div class="dashboard-sidebar">
+      <div class="sidebar-header">
+        <img src="/img/logo.png" alt="Default logo" />
+        <h3>RE:verSO MAKES YOU, YOU</h3>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-group">
+          <button class="nav-toggle">
+            <i class="fas fa-house"></i>
+            <span>Dashboard</span>
+          </button>
+        </div>
+        <a href="#" class="nav-item">
+          <i class="fas fa-user-group"></i>
+          <span>Users</span>
+        </a>
+        <a href="#" class="nav-item">
+          <i class="fas fa-box-open"></i>
+          <span>Products</span>
+        </a>
+        <a href="#" class="nav-item">
+          <i class="fas fa-receipt"></i>
+          <span>Billing</span>
+        </a>
+        <a href="#" class="nav-item">
+          <i class="fas fa-gear"></i>
+          <span>Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-logout">
+        <a href="#" class="nav-item" onclick="confirmLogout(event)">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Log out</span>
+        </a>
+      </div>
     </div>
 
-    <!-- Sidebar navigation with collapsible sections -->
-    <nav class="sidebar-nav">
-      <div class="nav-group">
-        <button class="nav-toggle">
-          <i class="fas fa-house"></i>
-          <span>Dashboard</span>
-        </button>
-      </div>
-      <a href="#" class="nav-item">
-        <i class="fas fa-user-group"></i>
-        <span>Users</span>
-      </a>
-      <a href="#" class="nav-item">
-        <i class="fas fa-box-open"></i>
-        <span>Products</span>
-      </a>
-      <a href="#" class="nav-item">
-        <i class="fas fa-receipt"></i>
-        <span>Billing</span>
-      </a>
-      <a href="#" class="nav-item">
-        <i class="fas fa-gear"></i>
-        <span>Settings</span>
-      </a>
-    </nav>
+    <!-- Right Content Area -->
+    <div class="dashboard-content">
+      <!-- Navbar / Header -->
+      <div class="dashboard-navbar">
+        <div class="dashboard-page__header">
+          <!-- Left Side -->
+          <div class="header-left">
+            <h2 class="dashboard-page__header-title">
+              Welcome back,
+              <span class="highlighted"
+                ><%= member?.memberNick || 'Nick' %></span
+              >
+            </h2>
+            <p class="dashboard-page__header-subtext">
+              This is your command center to manage everything in RE:VERSO
+            </p>
+          </div>
 
-    <!-- Logout at the bottom -->
-    <div class="sidebar-logout">
-      <a href="#" class="nav-item" onclick="confirmLogout(event)">
-        <i class="fas fa-sign-out-alt"></i>
-        <span>Log out</span>
-      </a>
-    </div>
-  </div>
+          <!-- Right Side -->
+          <div class="header-right">
+            <div class="admin-profile">
+              <% if (member?.memberImage) { %>
+              <img
+                src="/uploads/members/<%= member.memberImage %>"
+                alt="Admin"
+              />
+              <% } else { %>
+              <img src="/img/logo.png" alt="Admin" />
+              <% } %>
+              <div><%= member?.memberNick || "Admin" %></div>
+            </div>
 
-  <!-- Main Content Area -->
-  <div class="dashboard-page__main">
-    <div class="dashboard-page__header">
-      <div class="header-left">
-        <h2 class="dashboard-page__header-title">
-          Welcome back,
-          <span class="highlighted"
-            ><%= member?.memberNick || 'Nick is not defined' %></span
-          >
-        </h2>
-        <p class="dashboard-page__header-subtext">
-          This is your command center to manage everything in RE:VERSO
-        </p>
-      </div>
-      <div
-        class="header-right"
-        style="display: flex; align-items: center; gap: 1rem"
-      >
-        <!-- Profile Box -->
-        <div class="admin-profile" style="text-align: center">
-          <% if (member?.memberImage) { %>
-          <img
-            src="/uploads/members/<%= member.memberImage %>"
-            alt="Admin"
-            style="
-              width: 80px;
-              height: 80px;
-              border-radius: 50%;
-              object-fit: cover;
-              margin-right: 20px;
-              margin-top: 22px;
-            "
-          />
-          <% } else { %>
-          <img
-            src="/img/logo.png"
-            alt="Admin"
-            style="
-              width: 80px;
-              height: 80px;
-              border-radius: 50%;
-              margin-right: 20px;
-              margin-top: 22px;
-            "
-          />
-          <% } %>
-          <div
-            style="
-              font-size: 0.8rem;
-              margin-top: 4px;
-              font-weight: 500;
-              margin-right: 20px;
-            "
-          >
-            <%= member?.memberNick || "Admin" %>
+            <form action="/admin/admin-support" method="GET">
+              <button class="support-button" type="submit">
+                <i class="fa-solid fa-headset"></i>Support
+              </button>
+            </form>
           </div>
         </div>
-
-        <!-- Support button -->
-        <form action="/admin/admin-support" method="GET">
-          <button class="support-button" type="submit">
-            <i class="fa-solid fa-headset"></i>Support
-          </button>
-        </form>
-      </div>
-    </div>
-
-    <!-- Dashboard Cards Section -->
-    <div class="dashboard-page__feature-grid">
-      <div class="dashboard-page__feature-card card-blue">
-        <h3 class="dashboard-page__feature-title">Products Overview</h3>
-        <p class="dashboard-page__feature-desc">
-          Manage all items in your inventory. Add, remove or update product
-          info. Track categories, quantities and availability.
-        </p>
       </div>
 
-      <div class="dashboard-page__feature-card card-peach">
-        <h3 class="dashboard-page__feature-title">Billing & Payments</h3>
-        <p class="dashboard-page__feature-desc">
-          Monitor all payment records, pricing plans and transactions. Configure
-          your payment integrations and customer billing details.
-        </p>
-      </div>
+      <!-- Main Content -->
+      <div class="dashboard-wrapper">
+        <div class="dashboard-page__main">
+          <div class="dashboard-page__feature-grid">
+            <div class="dashboard-page__feature-card card-blue">
+              <h3 class="dashboard-page__feature-title">Products Overview</h3>
+              <p class="dashboard-page__feature-desc">
+                Manage all items in your inventory. Add, remove or update
+                product info. Track categories, quantities and availability.
+              </p>
+            </div>
 
-      <div class="dashboard-page__feature-card card-mint">
-        <h3 class="dashboard-page__feature-title">User Management</h3>
-        <p class="dashboard-page__feature-desc">
-          View, filter, and control registered users. Assign roles, suspend
-          accounts, and analyze engagement metrics. Configure your payment
-        </p>
-      </div>
+            <div class="dashboard-page__feature-card card-peach">
+              <h3 class="dashboard-page__feature-title">Billing & Payments</h3>
+              <p class="dashboard-page__feature-desc">
+                Monitor all payment records, pricing plans and transactions.
+                Configure your payment integrations and customer billing
+                details.
+              </p>
+            </div>
 
-      <div class="dashboard-page__feature-card card-pink">
-        <h3 class="dashboard-page__feature-title">Settings & Config</h3>
-        <p class="dashboard-page__feature-desc">
-          Adjust platform preferences, configure environment variables and
-          personalize your admin experience.
-        </p>
+            <div class="dashboard-page__feature-card card-mint">
+              <h3 class="dashboard-page__feature-title">User Management</h3>
+              <p class="dashboard-page__feature-desc">
+                View, filter, and control registered users. Assign roles,
+                suspend accounts, and analyze engagement metrics. Configure your
+                payment.
+              </p>
+            </div>
+
+            <div class="dashboard-page__feature-card card-pink">
+              <h3 class="dashboard-page__feature-title">Settings & Config</h3>
+              <p class="dashboard-page__feature-desc">
+                Adjust platform preferences, configure environment variables and
+                personalize your admin experience.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
+
   <script>
     function confirmLogout(e) {
       e.preventDefault();
