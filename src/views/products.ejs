@@ -1,12 +1,188 @@
 <%- include('includes/header') %>
-<body>
-  <div>
-    <div>products</div>
-    <div><%=member.memberNick%></div>
-    <% products.map((value, key) => { %>
-    <p><%= value.productName %>-<%= value.productSize%></p>
 
-    <% }) %>
+<link rel="stylesheet" href="/css/products.css" />
+<link rel="stylesheet" href="/css/common.css" />
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+  rel="stylesheet"
+/>
+
+<body class="dashboard-page">
+  <div class="dashboard-layout">
+    <!-- Sidebar -->
+    <%- include('includes/side-bar') %>
+    <!-- Main Content -->
+    <div class="dashboard-content">
+      <%- include('includes/navbar') %>
+      <div class="products-topbar">
+        <h2>Products List</h2>
+        <form class="search-bar">
+          <input
+            type="text"
+            placeholder="Search by product name, product type"
+          />
+          <i class="fas fa-search"></i>
+        </form>
+      </div>
+
+      <!-- Product Table -->
+      <div class="products-table-container">
+        <table class="products-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type (M/F)</th>
+              <th>Size</th>
+              <th>Price</th>
+              <th>Left Count</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% products.forEach((product) => { %>
+            <tr>
+              <td>
+                <img
+                  src="/<%= product.productImages[0] %>"
+                  alt="Product Image"
+                  class="product-thumb"
+                />
+                <%= product.productName %>
+              </td>
+              <td><%= product.productGender %></td>
+              <td><%= product.productSize %></td>
+              <td><%= product.productPrice %>$</td>
+              <td><%= product.productLeftCount %></td>
+              <td>
+                <select
+                  class="product-status-btn <%= product.productStatus.toLowerCase() %>"
+                  id="<%= product._id %>"
+                >
+                  <% if (product.productStatus === 'DELETE') { %>
+                  <option value="DELETE" selected>Delete</option>
+                  <% } else { %>
+                  <option value="DELETE">Delete</option>
+                  <% } %> <% if (product.productStatus === 'PROCESS') { %>
+                  <option value="PROCESS" selected>Process</option>
+                  <% } else { %>
+                  <option value="PROCESS">Process</option>
+                  <% } %> <% if (product.productStatus === 'PAUSE') { %>
+                  <option value="PAUSE" selected>Pause</option>
+                  <% } else { %>
+                  <option value="PAUSE">Pause</option>
+                  <% } %>
+                </select>
+              </td>
+            </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+      <div class="add-button-wrapper">
+        <button class="btn-primary" id="toggleForm">Add product</button>
+      </div>
+
+      <!-- Product Form Section -->
+      <div class="product-form-wrapper" id="formContainer">
+        <h2 class="product-form-title">New Product Detail</h2>
+        <form
+          action="/admin/product/create"
+          method="POST"
+          enctype="multipart/form-data"
+          class="product-form"
+          novalidate
+        >
+          <div class="form-grid">
+            <!-- Image Upload Section -->
+            <div class="image-upload-area">
+              <div class="image-preview-box">
+                <img
+                  id="preview-image"
+                  src="/img/adminlogo.jpg"
+                  alt="Product Preview"
+                  class="image-preview"
+                />
+              </div>
+              <label for="productImages" class="upload-btn">Choose Image</label>
+              <input
+                type="file"
+                id="productImages"
+                name="productImages"
+                accept=".jpg, .jpeg, .png"
+                onchange="previewFile(this)"
+                required
+                class="file-input"
+              />
+              <p class="upload-note">Only jpg, png, jpeg formats allowed</p>
+            </div>
+
+            <!-- Product Details Section -->
+            <div class="form-fields">
+              <input
+                name="productName"
+                type="text"
+                placeholder="Product name"
+                required
+              />
+
+              <div class="split-field">
+                <input
+                  name="productPrice"
+                  type="number"
+                  placeholder="Price"
+                  required
+                />
+                <select name="productSize" required>
+                  <option value="" disabled selected>Size</option>
+                  <option value="XS">XS</option>
+                  <option value="S">S</option>
+                  <option value="M">M</option>
+                  <option value="L">L</option>
+                  <option value="XL">XL</option>
+                  <option value="XXL">XXL</option>
+                </select>
+              </div>
+
+              <div class="split-field">
+                <input
+                  name="productLeftCount"
+                  type="number"
+                  placeholder="Left count"
+                  required
+                />
+                <select name="productGender" required>
+                  <option value="" disabled selected>Gender</option>
+                  <option value="MALE">Male</option>
+                  <option value="FEMALE">Female</option>
+                </select>
+                <select name="productCategory" required>
+                  <option value="" disabled selected>Category</option>
+                  <option value="TOPS">TOPS</option>
+                  <option value="JEANS">JEANS</option>
+                  <option value="JACKETS">JACKETS</option>
+                  <option value="SHOES">SHOES</option>
+                  <option value="ACCESSORIES">ACCESSORIES</option>
+                  <option value="OTHER">OTHER</option>
+                </select>
+              </div>
+
+              <textarea
+                name="productDesc"
+                placeholder="Product description"
+              ></textarea>
+
+              <div class="form-actions">
+                <button type="button" class="btn cancel" id="cancelForm">
+                  Cancel
+                </button>
+                <button type="submit" class="btn save">Save</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
+  <script type="text/javascript" src="/js/products.js"></script>
 </body>
 <%- include('includes/footer') %>

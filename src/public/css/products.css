@@ -1,0 +1,283 @@
+/* === General Layout === */
+body.dashboard-page {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  display: flex;
+  min-height: 100vh;
+  background: #f9f8f6;
+}
+
+.dashboard-layout {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+/* === Main Content === */
+.dashboard-content {
+  flex: 1;
+  padding: 15px 30px;
+  display: flex;
+  overflow-y: auto;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.products-topbar {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.products-topbar h2 {
+  font-size: 24px;
+  color: #1a1a1a;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.search-bar input {
+  border: none;
+  outline: none;
+  font-size: 14px;
+  width: 200px;
+}
+
+/* Product Table */
+.products-table-container {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.products-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.products-table th,
+.products-table td {
+  padding: 12px 14px;
+  font-size: 14px;
+  text-align: left;
+}
+
+.products-table th {
+  background-color: #f1f1f1;
+  color: #444;
+}
+
+.products-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.product-thumb {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+/* Status Dropdown */
+.product-status-btn {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+/* Add Button */
+.add-button-wrapper {
+  text-align: right;
+  margin-top: 20px;
+}
+
+.btn-primary {
+  padding: 10px 18px;
+  background-color: #48b98dcc;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+/* Product Form */
+/* === Product Form Styling === */
+.product-form-wrapper {
+  margin-top: 40px;
+  background: #fff;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.product-form-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: #222;
+}
+
+.product-form .form-grid {
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.image-upload-area {
+  flex: 1;
+  text-align: center;
+}
+
+.image-preview-box {
+  width: 300px;
+  height: 300px;
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 0 auto 12px;
+  background-color: #f3f3f3;
+}
+
+.image-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.upload-btn {
+  display: inline-block;
+  margin-bottom: 8px;
+  padding: 10px 20px;
+  background-color: #48b98dcc;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.image-upload-area input[type="file"] {
+  display: none;
+}
+
+.upload-note {
+  font-size: 14px;
+  color: #333;
+}
+
+.form-fields {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-fields input,
+.form-fields select,
+.form-fields textarea {
+  padding: 12px 14px;
+  font-size: 15px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-fields input:focus,
+.form-fields select:focus,
+.form-fields textarea:focus {
+  border-color: #48b98dcc;
+  box-shadow: 0 0 0 2px rgba(72, 185, 141, 0.3);
+  outline: none;
+}
+
+.split-field {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.form-fields textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.btn {
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: background 0.3s ease;
+}
+
+.btn.cancel {
+  background-color: #eeeeee;
+  color: #333;
+}
+
+.btn.cancel:hover {
+  background-color: #cccccc;
+}
+
+.btn.save {
+  background-color: #48b98dcc;
+  color: white;
+}
+
+.btn.save:hover {
+  background-color: #1f2a73;
+}
+
+/* Default style */
+.product-status-btn {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+/* Status styles */
+.product-status-btn.delete {
+  background-color: #b40606;
+  color: #fff;
+}
+
+.product-status-btn.process {
+  background-color: #48b98dcc;
+  color: #000000;
+}
+
+.product-status-btn.pause {
+  background-color: #5663ab;
+  color: #ffffff;
+}
+.file-input {
+  padding: 10px;
+  border: 1px dashed #ccc;
+  border-radius: 10px;
+  background: #f9f9f9;
+  cursor: pointer;
+}
+.file-input:hover {
+  border-color: #48b98d;
+}

@@ -1,5 +1,7 @@
 <%- include('includes/header') %>
+<link rel="stylesheet" href="/css/common.css" />
 <link rel="stylesheet" href="/css/dashboard.css" />
+
 <link
   href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
   rel="stylesheet"
@@ -9,87 +11,12 @@
   <!-- Main Layout -->
   <div class="dashboard-layout">
     <!-- Sidebar -->
-    <div class="dashboard-sidebar">
-      <div class="sidebar-header">
-        <img src="/img/logo.png" alt="Default logo" />
-        <h3>RE:verSO MAKES YOU, YOU</h3>
-      </div>
-
-      <nav class="sidebar-nav">
-        <div class="nav-group">
-          <button class="nav-toggle">
-            <i class="fas fa-house"></i>
-            <span>Dashboard</span>
-          </button>
-        </div>
-        <a href="#" class="nav-item">
-          <i class="fas fa-box-open"></i>
-          <span>Products</span>
-        </a>
-        <a href="#" class="nav-item">
-          <i class="fas fa-user-group"></i>
-          <span>Users</span>
-        </a>
-
-        <a href="#" class="nav-item">
-          <i class="fas fa-receipt"></i>
-          <span>Billing</span>
-        </a>
-        <a href="#" class="nav-item">
-          <i class="fas fa-gear"></i>
-          <span>Settings</span>
-        </a>
-      </nav>
-
-      <div class="sidebar-logout">
-        <a href="#" class="nav-item" onclick="confirmLogout(event)">
-          <i class="fas fa-sign-out-alt"></i>
-          <span>Log out</span>
-        </a>
-      </div>
-    </div>
+    <%- include('includes/side-bar') %>
 
     <!-- Right Content Area -->
     <div class="dashboard-content">
       <!-- Navbar / Header -->
-      <div class="dashboard-navbar">
-        <div class="dashboard-page__header">
-          <!-- Left Side -->
-          <div class="header-left">
-            <h2 class="dashboard-page__header-title">
-              Welcome back,
-              <span class="highlighted"
-                ><%= member?.memberNick || 'Nick' %></span
-              >
-            </h2>
-            <p class="dashboard-page__header-subtext">
-              This is your command center to manage everything in RE:VERSO
-            </p>
-          </div>
-
-          <!-- Right Side -->
-          <div class="header-right">
-            <div class="admin-profile">
-              <% if (member?.memberImage) { %>
-              <img
-                src="/uploads/members/<%= member.memberImage %>"
-                alt="Admin"
-              />
-              <% } else { %>
-              <img src="/img/logo.png" alt="Admin" />
-              <% } %>
-              <div><%= member?.memberNick || "Admin" %></div>
-            </div>
-
-            <form action="/admin/admin-support" method="GET">
-              <button class="support-button" type="submit">
-                <i class="fa-solid fa-headset"></i>Support
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
-
+      <%- include('includes/navbar') %>
       <!-- Main Content -->
       <div class="dashboard-wrapper">
         <div class="dashboard-page__main">
@@ -117,6 +44,14 @@
                 View, filter, and control registered users. Assign roles,
                 suspend accounts, and analyze engagement metrics. Configure your
                 payment.
+              </p>
+            </div>
+            <div class="dashboard-page__feature-card card-mint">
+              <h3 class="dashboard-page__feature-title">Dashboard is Main</h3>
+              <p class="dashboard-page__feature-desc">
+                Basicallt this is the main page of the dashboard. You can see
+                all the features of the dashboard here. You can also see the
+                statistics of the dashboard here.
               </p>
             </div>
 
