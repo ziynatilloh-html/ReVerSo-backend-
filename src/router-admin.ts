@@ -40,7 +40,6 @@ routerAdmin.get(
 routerAdmin.post(
   "/product/create",
   adminController.verifyAdmin,
-  // makeUploader("products").single("productImages"),
   makeUploader("products").array("productImages", 5),
   productController.createNewProduct
 );
