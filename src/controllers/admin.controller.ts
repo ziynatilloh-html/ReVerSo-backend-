@@ -96,7 +96,7 @@ adminController.processLogin = async (req: AdminRequest, res: Response) => {
     console.log("Error processLogin:", err);
     const message =
       err instanceof Errors ? err.message : Message.SOMETHING_WENT_WRONG;
-    res.send(`<script>alert("${message}")<script>`);
+    res.redirect("login");
   }
 };
 adminController.processSignup = async (req: AdminRequest, res: Response) => {
@@ -116,7 +116,9 @@ adminController.processSignup = async (req: AdminRequest, res: Response) => {
     console.log("Error, processSignup:", err);
     const message =
       err instanceof Errors ? err.message : Message.SOMETHING_WENT_WRONG;
-    res.send(`<script>alert("${message}")<script>`);
+    res.send(
+      `<script>alert("${message}"); window.location.href='/admin/login';</script>`
+    );
   }
 };
 adminController.processLogout = async (req: AdminRequest, res: Response) => {

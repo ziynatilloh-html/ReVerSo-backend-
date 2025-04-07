@@ -6,6 +6,7 @@ body {
   background: linear-gradient(to right, #4a90e2, #37b24d);
   font-family: Arial, sans-serif;
 }
+/* Add this to login.css or common.css */
 
 .login-container {
   display: flex;
@@ -24,6 +25,31 @@ body {
 }
 .login-btn {
   background: linear-gradient(135deg, #7eab15, #225107);
+}
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-6px);
+  }
+  40% {
+    transform: translateX(6px);
+  }
+  60% {
+    transform: translateX(-6px);
+  }
+  80% {
+    transform: translateX(6px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.shake {
+  animation: shake 0.4s ease;
+  border: 1px solid red !important;
 }
 .login-top img {
   border-radius: 25px;

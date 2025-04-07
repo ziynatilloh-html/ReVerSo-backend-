@@ -4,20 +4,38 @@
     <h3>ReVer:So MAKES YOU YOU</h3>
   </div>
   <nav class="sidebar-nav">
-    <a href="/admin/dashboard" class="nav-item">
+    <a
+      href="/admin/dashboard"
+      class="nav-item <%= currentPath === '/admin/dashboard' ? 'active' : '' %>"
+    >
       <i class="fas fa-house"></i> Dashboard
     </a>
-    <a href="/admin/product/all" class="nav-item btn-primary">
+
+    <a
+      href="/admin/product/all"
+      class="nav-item <%= currentPath === '/admin/product/all' ? 'active' : '' %>"
+    >
       <i class="fas fa-box-open"></i> Products
     </a>
-    <a href="/admin/users" class="nav-item">
+
+    <a
+      href="/admin/users"
+      class="nav-item <%= currentPath === '/admin/users' ? 'active' : '' %>"
+    >
       <i class="fas fa-user-group"></i> Users
     </a>
 
-    <a href="/admin/billing" class="nav-item">
+    <a
+      href="/admin/billing"
+      class="nav-item <%= currentPath === '/admin/billing' ? 'active' : '' %>"
+    >
       <i class="fas fa-receipt"></i> Billing
     </a>
-    <a href="/admin/settings" class="nav-item">
+
+    <a
+      href="/admin/settings"
+      class="nav-item <%= currentPath === '/admin/settings' ? 'active' : '' %>"
+    >
       <i class="fas fa-gear"></i> Settings & Profile
     </a>
   </nav>

@@ -44,9 +44,9 @@ app.use(function (req, res, next) {
   const sessionInstance = req.session as T;
 
   if (req.isAuthenticated() && req.user) {
-    res.locals.member = req.user; // ✅ Passport user
+    res.locals.member = req.user; // Passport user
   } else if (sessionInstance.member) {
-    res.locals.member = sessionInstance.member; // ✅ Custom session user
+    res.locals.member = sessionInstance.member; // Custom session user
   } else {
     res.locals.member = null;
   }
@@ -58,6 +58,10 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
 /** 4-ROUTERS **/
+app.use((req, res, next) => {
+  res.locals.currentPath = req.path;
+  next();
+});
 app.use("/admin", routerAdmin);
 app.use("/", router);
 //GOOGLE AUTH
