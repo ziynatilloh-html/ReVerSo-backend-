@@ -35,7 +35,6 @@ body.dashboard-page {
 .btn-outline:hover {
   background-color: #e8f0fe;
 }
-
 .dashboard-layout {
   display: flex;
   width: 100%;
@@ -180,10 +179,10 @@ body.dashboard-page {
   justify-content: flex-start;
 }
 
-/* .nav-item:hover,
+.nav-item:hover,
 .nav-toggle:hover {
   background-color: #1f2a73;
-} */
+}
 
 .nav-submenu {
   display: none;

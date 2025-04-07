@@ -1,7 +1,7 @@
 import express from "express";
 const routerAdmin = express.Router();
 import adminController from "./controllers/admin.controller";
-import productsController from "./controllers/products.controller";
+import productController from "./controllers/product.controller";
 import makeUploader from "./libs/utils/uploader";
 
 /*Owner*/
@@ -33,22 +33,21 @@ routerAdmin.get("/admin-support", adminController.adminSupportPage);
 
 /* Product */
 routerAdmin.get(
-  "/products/all",
+  "/product/all",
   adminController.verifyAdmin,
-  productsController.getAllProducts
+  productController.getAllProducts
 );
 routerAdmin.post(
-  "/products/create",
-
+  "/product/create",
   adminController.verifyAdmin,
-  // makeUploader.single("productImage"),
+  // makeUploader("products").single("productImages"),
   makeUploader("products").array("productImages", 5),
-  productsController.createNewProduct
+  productController.createNewProduct
 );
 routerAdmin.post(
-  "/products/:id",
+  "/product/:id",
   adminController.verifyAdmin,
-  productsController.updateChosenProduct
+  productController.updateChosenProduct
 );
 
 //TEST//
