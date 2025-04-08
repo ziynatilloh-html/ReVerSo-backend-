@@ -95,6 +95,11 @@ body.dashboard-page {
   padding: 6px 10px;
   border-radius: 8px;
   border: 1px solid #ccc;
+  font-size: 14px;
+  background-color: #e6f0e9;
+  font-weight: 500;
+  transition: background 0.3s ease;
+  cursor: pointer;
 }
 
 /* Add Button */
@@ -258,18 +263,21 @@ body.dashboard-page {
 
 /* Status styles */
 .product-status-btn.delete {
-  background-color: #b40606;
-  color: #fff;
+  background-color: #ffe4e4;
+  border-color: #ff7272;
+  color: #a10000;
 }
 
 .product-status-btn.process {
-  background-color: #48b98dcc;
-  color: #000000;
+  background-color: #4a48bc;
+  border-color: #ccc;
+  color: #f5f5f5;
 }
 
 .product-status-btn.pause {
-  background-color: #5663ab;
-  color: #ffffff;
+  background-color: #d2f4dc;
+  border-color: #88e0a6;
+  color: #1f7a3a;
 }
 .file-input {
   padding: 10px;
@@ -280,4 +288,49 @@ body.dashboard-page {
 }
 .file-input:hover {
   border-color: #48b98d;
+}
+/* Center table cells */
+.products-table th,
+.products-table td {
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* Consistent cell height */
+.products-table td {
+  height: 60px; /* 🔥 locks it */
+  padding: 12px 14px;
+  vertical-align: middle;
+}
+
+/* Flex layout for image + name */
+.product-name-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 100%; /* 🔥 ensures full cell height */
+}
+
+/* Name span — always aligned with image */
+.product-name-wrapper {
+  line-height: 1;
+  max-width: 140px;
+  display: inline-block;
+  white-space: nowrap;
+
+  text-overflow: ellipsis;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+/* Product image — locked size */
+.product-thumb {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
 }

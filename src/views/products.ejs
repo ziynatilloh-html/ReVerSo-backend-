@@ -42,12 +42,14 @@
             <% products.forEach((product) => { %>
             <tr>
               <td>
-                <img
-                  src="/<%= product.productImages[0] %>"
-                  alt="Product Image"
-                  class="product-thumb"
-                />
-                <%= product.productName %>
+                <div class="product-name-wrapper">
+                  <img
+                    src="/<%= product.productImages?.[0] || 'img/default.jpg' %>"
+                    alt="Product Image"
+                    class="product-thumb"
+                  />
+                  <span><%= product.productName %></span>
+                </div>
               </td>
               <td><%= product.productGender %></td>
               <td><%= product.productSize %></td>

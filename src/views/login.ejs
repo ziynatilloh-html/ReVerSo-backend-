@@ -99,6 +99,24 @@
       </p>
     </div>
   </form>
+  <script>
+    function switchLoginInput() {
+      const loginType = document.getElementById("loginType").value;
+      const loginInput = document.getElementById("loginInput");
+
+      // Change name based on dropdown
+      loginInput.name = loginType;
+
+      // Optional: Change placeholder for user experience
+      if (loginType === "memberNick") {
+        loginInput.placeholder = "Enter your nickname";
+      } else if (loginType === "memberPhone") {
+        loginInput.placeholder = "Enter your phone number";
+      } else if (loginType === "memberEmail") {
+        loginInput.placeholder = "Enter your email address";
+      }
+    }
+  </script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="/js/login.js"></script>
 </body>

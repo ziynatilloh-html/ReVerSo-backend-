@@ -5,11 +5,13 @@ import {
   LoginInput,
   Member,
   MemberInput,
+  MemberUpdateInput,
   PasswordResetRequestInput,
 } from "../libs/types/member";
 import * as bcrypt from "bcryptjs";
 import * as crypto from "crypto";
 import { sendResetPasswordEmail } from "../libs/utils/email";
+import { shapeIntoMongooseObjectId } from "../libs/types/config";
 
 class MemberService {
   private readonly memberModel;
@@ -17,6 +19,9 @@ class MemberService {
   constructor() {
     this.memberModel = MemberModel;
   }
+
+  //======SPA======//
+
   public async signup(input: MemberInput): Promise<Member> {
     const salt = await bcrypt.genSalt();
     input.memberPassword = await bcrypt.hash(input.memberPassword, salt);
@@ -51,7 +56,10 @@ class MemberService {
       throw new Errors(HttpCode.UNAUTHORIZED, Message.NO_MEMBER_FOUND);
     return await this.memberModel.findById(member._id).lean().exec();
   }
-  /* SSR*/
+
+  //======SSR======//
+
+  //===Authentication===//
   public async processSignup(input: MemberInput): Promise<Member> {
     const exist = await this.memberModel
       .findOne({ memberType: MemberType.ADMIN })
@@ -89,6 +97,7 @@ class MemberService {
       throw new Errors(HttpCode.UNAUTHORIZED, Message.WRONG_PASSWORD);
     return await this.memberModel.findOne(member._id).exec();
   }
+  //======Password Reset======//
   public async requestPassword(
     input: PasswordResetRequestInput
   ): Promise<{ message: string }> {
@@ -126,6 +135,24 @@ class MemberService {
     member.passwordResetExpires = undefined;
 
     await member.save();
+  }
+  //======Admin Panel======//
+  public async updateChosenMember(input: MemberUpdateInput): Promise<Member> {
+    input._id = shapeIntoMongooseObjectId(input._id);
+    const result = await this.memberModel
+      .findByIdAndUpdate({ _id: input._id }, input, { new: true })
+      .exec();
+    if (!result) throw new Errors(HttpCode.NOT_MODIFIED, Message.UPDATE_FAILED);
+
+    return result;
+  }
+  public async getUsers(): Promise<Member[]> {
+    const result = await this.memberModel
+      .find({ memberType: MemberType.MEMBER })
+      .exec();
+    if (!result) throw new Errors(HttpCode.NOT_FOUND, Message.NO_DATA_FOUND);
+
+    return result;
   }
 }
 export default MemberService;

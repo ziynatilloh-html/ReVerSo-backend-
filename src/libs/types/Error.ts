@@ -1,4 +1,4 @@
-// HTTP status codes enum with explanations
+//=== Custom error codes enum ===//
 export enum HttpCode {
   OK = 200,
   CREATED = 201,
@@ -10,7 +10,7 @@ export enum HttpCode {
   INTERNAL_SERVER_ERROR = 500,
 }
 
-// Message enum with user-friendly error messages
+//=== Custom error messages enum ===//
 export enum Message {
   EXISTING_MEMBERNICK = "Member exists in the server",
   WRONG_PASSWORD = "Wrong password",
@@ -27,8 +27,7 @@ export enum Message {
   PASSWORD_CHANGED = "✅ Your password has been changed successfully!",
 }
 
-// Custom error class extending the built-in Error class
-
+//=== Custom error class ===//
 class Errors extends Error {
   public code: HttpCode;
   public message: Message;

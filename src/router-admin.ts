@@ -4,13 +4,10 @@ import adminController from "./controllers/admin.controller";
 import productController from "./controllers/product.controller";
 import makeUploader from "./libs/utils/uploader";
 
-/*Owner*/
+//====Admin Routes====//
 routerAdmin.get("/", adminController.goHome);
 
-routerAdmin
-  .get("/login", adminController.getLogin)
-  .post("/login", adminController.processLogin);
-
+//====Authentification Routes ADMIN====//
 routerAdmin
   .get("/signup", adminController.getSignup)
   .post(
@@ -18,8 +15,9 @@ routerAdmin
     makeUploader("members").single("memberImage"),
     adminController.processSignup
   );
-routerAdmin.get("/logout", adminController.processLogout);
-routerAdmin.get("/check-me", adminController.checkAuthSession);
+routerAdmin
+  .get("/login", adminController.getLogin)
+  .post("/login", adminController.processLogin);
 
 routerAdmin
   .get("/request-password", adminController.getRequestPassword)
@@ -29,14 +27,19 @@ routerAdmin
   .get("/reset-password/:token", adminController.getResetPassword)
   .post("/reset-password/:token", adminController.resetPassword);
 
-routerAdmin.get("/admin-support", adminController.adminSupportPage);
+routerAdmin.get("/logout", adminController.processLogout);
+routerAdmin.get("/check-me", adminController.checkAuthSession);
 
-/* Product */
+//====Product Routes====//
+
+routerAdmin.get("/dashboard", adminController.getDashboard);
+
 routerAdmin.get(
   "/product/all",
   adminController.verifyAdmin,
   productController.getAllProducts
 );
+
 routerAdmin.post(
   "/product/create",
   adminController.verifyAdmin,
@@ -48,9 +51,18 @@ routerAdmin.post(
   adminController.verifyAdmin,
   productController.updateChosenProduct
 );
+//====User Routes====//
+routerAdmin.get(
+  "/user/all",
+  adminController.verifyAdmin,
+  adminController.getUsers
+);
+routerAdmin.post(
+  "/edit/user",
+  adminController.verifyAdmin,
+  adminController.updateChosenMember
+);
 
-//TEST//
-
-routerAdmin.get("/dashboard", adminController.getDashboard);
+routerAdmin.get("/admin-support", adminController.adminSupportPage);
 
 export default routerAdmin;

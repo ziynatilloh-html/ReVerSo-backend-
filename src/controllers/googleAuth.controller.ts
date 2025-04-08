@@ -6,7 +6,7 @@ import Errors, { Message } from "../libs/types/Error";
 import { T } from "../libs/types/common";
 
 const googleAuthController: T = {};
-
+//==== Google Auth Controller====//
 googleAuthController.signupWithGoogle = async (
   req: Request,
   res: Response,

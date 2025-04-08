@@ -1,0 +1,183 @@
+/* === General Layout === */
+body.dashboard-page {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  display: flex;
+  min-height: 100vh;
+  background: #f9f8f6;
+}
+
+.dashboard-layout {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+/* === Main Content === */
+.dashboard-content {
+  flex: 1;
+  padding: 15px 30px;
+  display: flex;
+  overflow-y: auto;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.users-topbar {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.users-topbar h2 {
+  font-size: 24px;
+  color: #1a1a1a;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.search-bar input {
+  border: none;
+  outline: none;
+  font-size: 14px;
+  width: 200px;
+}
+
+/* === Users Table === */
+.users-table-container {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.users-table th,
+.users-table td {
+  padding: 12px 14px;
+  font-size: 14px;
+  text-align: left;
+  color: #1a1a1a;
+}
+
+.users-table th {
+  background-color: #f1f1f1;
+  font-weight: 600;
+}
+
+.users-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.users-table tbody tr:hover {
+  background-color: #f1f7f4;
+}
+
+/* === Profile Image + Name Cell === */
+.user-name-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.member-thumb {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 8px;
+  background-color: #eee;
+}
+
+/* === Status Dropdown === */
+.member-status-btn {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  background-color: #e6f0e9;
+  font-weight: 500;
+  transition: background 0.3s ease;
+  cursor: pointer;
+}
+
+/* Status-specific styles */
+.member-status-btn.active {
+  background-color: #d2f4dc;
+  border-color: #88e0a6;
+  color: #1f7a3a;
+}
+
+.member-status-btn.blocked {
+  background-color: #ffe4e4;
+  border-color: #ff7272;
+  color: #a10000;
+}
+
+.member-status-btn.deleted {
+  background-color: #efefef;
+  border-color: #ccc;
+  color: #555;
+}
+/* Center all table cells */
+.users-table th,
+.users-table td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* Wrapper for image + nickname */
+.user-name-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* 👈 centers horizontally */
+  gap: 10px;
+}
+
+/* Profile Image */
+.member-thumb {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+/* Prevent rows from stretching */
+.users-table td,
+.users-table th {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 180px; /* You can adjust */
+}
+
+/* Keep image + text centered, fixed height */
+.user-name-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 50px;
+}
+
+/* Text wrapping or truncating */
+.user-name-wrapper span {
+  max-width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  font-weight: 500;
+  color: #1a1a1a;
+}

@@ -1,9 +1,14 @@
 import express from "express";
 const router = express.Router();
 import memberController from "./controllers/member.controller";
+import makeUploader from "./libs/utils/uploader";
 
-router.get("/login", memberController.login);
-
-router.get("/signup", memberController.signup);
+//====Member Routes====//
+router.post(
+  "/signup",
+  makeUploader("members").single("memberImage"),
+  memberController.signup
+);
+router.post("/login", memberController.login);
 
 export default router;

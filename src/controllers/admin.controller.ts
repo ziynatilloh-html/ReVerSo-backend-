@@ -8,9 +8,12 @@ import {
   MemberInput,
   PasswordResetRequestInput,
 } from "../libs/types/member";
-import Errors, { Message } from "../libs/types/Error";
+import Errors, { HttpCode, Message } from "../libs/types/Error";
+
+const memberService = new MemberService();
 
 const adminController: T = {};
+//======SPA======//
 adminController.goHome = (req: Request, res: Response) => {
   try {
     console.log("goHome");
@@ -20,14 +23,13 @@ adminController.goHome = (req: Request, res: Response) => {
     res.redirect("/admin");
   }
 };
-
-//TEST VERSION //
-adminController.getDashboard = (req: Request, res: Response) => {
+adminController.getSignup = (req: Request, res: Response) => {
   try {
-    res.render("dashboard");
+    console.log("getSignup");
+    res.render("signup");
   } catch (err) {
-    console.log("Error loading dashboard:", err);
-    res.redirect("/admin/login");
+    console.log("Error getSignup:", err);
+    res.redirect("/admin");
   }
 };
 adminController.getLogin = (req: Request, res: Response) => {
@@ -39,13 +41,12 @@ adminController.getLogin = (req: Request, res: Response) => {
     res.redirect("/admin");
   }
 };
-adminController.getSignup = (req: Request, res: Response) => {
+adminController.getDashboard = (req: Request, res: Response) => {
   try {
-    console.log("getSignup");
-    res.render("signup");
+    res.render("dashboard");
   } catch (err) {
-    console.log("Error getSignup:", err);
-    res.redirect("/admin");
+    console.log("Error loading dashboard:", err);
+    res.redirect("/admin/login");
   }
 };
 adminController.getRequestPassword = (req: Request, res: Response) => {
@@ -66,6 +67,16 @@ adminController.getResetPassword = (req: Request, res: Response) => {
     res.redirect("/admin/login");
   }
 };
+adminController.getUsers = async (req: Request, res: Response) => {
+  try {
+    console.log("getUsers");
+    const result = await memberService.getUsers();
+    res.render("users", { members: result, currentPath: "/admin/user/all" });
+  } catch (err) {
+    console.log("Error, getUsers:", err);
+    res.redirect("/admin/login");
+  }
+};
 adminController.adminSupportPage = (req: Request, res: Response) => {
   try {
     console.log("adminSupportPage");
@@ -75,30 +86,9 @@ adminController.adminSupportPage = (req: Request, res: Response) => {
     res.redirect("/admin/dashboard");
   }
 };
-//Back-end side server rendering
+//======SSR======//
 
-adminController.processLogin = async (req: AdminRequest, res: Response) => {
-  try {
-    console.log("processLogin");
-    const input: LoginInput = req.body;
-
-    const memberService = new MemberService();
-    const result = await memberService.processLogin(input);
-    req.session.member = result;
-    req.session.save((err) => {
-      if (err) {
-        console.error("Session save error:", err);
-        return res.redirect("/login");
-      }
-      return res.redirect("/admin/dashboard");
-    });
-  } catch (err) {
-    console.log("Error processLogin:", err);
-    const message =
-      err instanceof Errors ? err.message : Message.SOMETHING_WENT_WRONG;
-    res.redirect("login");
-  }
-};
+//======Authentification======//
 adminController.processSignup = async (req: AdminRequest, res: Response) => {
   try {
     console.log("processSignup");
@@ -121,46 +111,29 @@ adminController.processSignup = async (req: AdminRequest, res: Response) => {
     );
   }
 };
-adminController.processLogout = async (req: AdminRequest, res: Response) => {
+adminController.processLogin = async (req: AdminRequest, res: Response) => {
   try {
-    console.log("processLogout");
-    req.session.destroy(function (err) {
+    console.log("processLogin");
+    const input: LoginInput = req.body;
+
+    const memberService = new MemberService();
+    const result = await memberService.processLogin(input);
+    req.session.member = result;
+    req.session.save((err) => {
       if (err) {
-        console.log("Session destruction error:", err);
-        return res.send(`<script>alert("Logout failed")</script>`);
+        console.error("Session save error:", err);
+        return res.redirect("/login");
       }
-      res.redirect("/admin");
+      return res.redirect("/admin/dashboard");
     });
   } catch (err) {
-    console.log("Error, processLogout:", err);
-    res.redirect("/admin");
+    console.log("Error processLogin:", err);
+    const message =
+      err instanceof Errors ? err.message : Message.SOMETHING_WENT_WRONG;
+    res.redirect("login");
   }
 };
-adminController.checkAuthSession = async (req: AdminRequest, res: Response) => {
-  try {
-    if (req.session?.member)
-      res.send(`<script>alert("${req.session.member.memberNick}")<script>`);
-    else res.send(`<script>alert("${Message.NOT_AUTHENTICATED}")<script>`);
-  } catch (err) {
-    console.log("Error,processLogin", err);
-    res.send(err);
-  }
-};
-adminController.verifyAdmin = (
-  req: AdminRequest,
-  res: Response,
-  next: NextFunction
-) => {
-  if (req.session?.member?.memberType === MemberType.ADMIN) {
-    req.member = req.session.member;
-    next();
-  } else {
-    const message = Message.NOT_AUTHENTICATED;
-    res.send(`<script>alert("${message}")<script>`);
-  }
-};
-
-//Password resetting//
+//======Password Reset======//
 adminController.requestPassword = async (req: Request, res: Response) => {
   try {
     console.log("requestPassword");
@@ -196,5 +169,56 @@ adminController.resetPassword = async (req: Request, res: Response) => {
     res.send(`<script>alert("${message}")<script>`);
   }
 };
-
+//======Logout======//
+adminController.processLogout = async (req: AdminRequest, res: Response) => {
+  try {
+    console.log("processLogout");
+    req.session.destroy(function (err) {
+      if (err) {
+        console.log("Session destruction error:", err);
+        return res.send(`<script>alert("Logout failed")</script>`);
+      }
+      res.redirect("/admin");
+    });
+  } catch (err) {
+    console.log("Error, processLogout:", err);
+    res.redirect("/admin");
+  }
+};
+//======Admin Panel======//
+adminController.updateChosenMember = async (req: Request, res: Response) => {
+  try {
+    console.log("updateChosenMember");
+    const result = await memberService.updateChosenMember(req.body);
+    res.status(HttpCode.OK).json({ success: true, data: result });
+  } catch (err) {
+    console.log("Error, updateChosenMember:", err);
+    if (err instanceof Errors) res.status(err.code).json(err);
+    else res.status(Errors.standard.code).json(Errors.standard);
+  }
+};
+//======Check Auth Session======//
+adminController.checkAuthSession = async (req: AdminRequest, res: Response) => {
+  try {
+    if (req.session?.member)
+      res.send(`<script>alert("${req.session.member.memberNick}")<script>`);
+    else res.send(`<script>alert("${Message.NOT_AUTHENTICATED}")<script>`);
+  } catch (err) {
+    console.log("Error,processLogin", err);
+    res.send(err);
+  }
+};
+adminController.verifyAdmin = (
+  req: AdminRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  if (req.session?.member?.memberType === MemberType.ADMIN) {
+    req.member = req.session.member;
+    next();
+  } else {
+    const message = Message.NOT_AUTHENTICATED;
+    res.send(`<script>alert("${message}")<script>`);
+  }
+};
 export default adminController;

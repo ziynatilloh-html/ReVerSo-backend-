@@ -1,5 +1,88 @@
-<body>
-  <div style="font-size: large">users</div>
+<%- include('includes/header') %>
+
+<link rel="stylesheet" href="/css/common.css" />
+<link rel="stylesheet" href="/css/user.css" />
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+  rel="stylesheet"
+/>
+
+<body class="dashboard-page">
+  <div class="dashboard-layout">
+    <!-- Sidebar -->
+    <%- include('includes/side-bar') %>
+
+    <!-- Main Content -->
+    <div class="dashboard-content">
+      <%- include('includes/navbar') %>
+
+      <!-- Topbar -->
+      <div class="users-topbar">
+        <h2>Users List</h2>
+        <div class="search-bar">
+          <input
+            type="text"
+            id="user-search"
+            placeholder="Search by name, phone or email"
+          />
+          <i class="fas fa-search"></i>
+        </div>
+      </div>
+
+      <!-- Users Table -->
+      <div class="users-table-container">
+        <table class="users-table">
+          <thead>
+            <tr>
+              <th>Nickname</th>
+              <th>Phone</th>
+              <th>Email</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="users-table-body">
+            <% members.forEach((member) => { %>
+            <tr>
+              <td>
+                <div class="user-name-wrapper">
+                  <img
+                    src="/uploads/members/<%= member.memberImage || 'img/adminlogo.jpg' %>"
+                    alt="Profile"
+                    class="member-thumb"
+                  />
+                  <span><%= member.memberNick %></span>
+                </div>
+              </td>
+              <td><%= member.memberPhone %></td>
+              <td><%= member.memberEmail %></td>
+              <td>
+                <select
+                  class="member-status-btn <%= member.memberStatus.toLowerCase() %>"
+                  data-id="<%= member._id %>"
+                >
+                  <% if (member.memberStatus === 'ACTIVE') { %>
+                  <option value="ACTIVE" selected>Active</option>
+                  <% } else { %>
+                  <option value="ACTIVE">Active</option>
+                  <% } %> <% if (member.memberStatus === 'BLOCKED') { %>
+                  <option value="BLOCKED" selected>Blocked</option>
+                  <% } else { %>
+                  <option value="BLOCKED">Blocked</option>
+                  <% } %> <% if (member.memberStatus === 'DELETED') { %>
+                  <option value="DELETED" selected>Deleted</option>
+                  <% } else { %>
+                  <option value="DELETED">Deleted</option>
+                  <% } %>
+                </select>
+              </td>
+            </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="/js/user.js"></script>
 </body>
 
 <%- include('includes/footer') %>

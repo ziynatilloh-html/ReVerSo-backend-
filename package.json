@@ -1,19 +1,16 @@
 {
-  "name": "reverso",
+  "name": "reverso-backend",
   "version": "1.0.0",
-  "description": "This is burak project backend",
-  "main": "src/server.ts",
+  "description": "Backend for ReVer:So admin panel and shop",
+  "main": "dist/server.js",
   "scripts": {
-    "start": "ts-node src/server.ts ",
-    "start:dev": "nodemon  --exec ts-node src/server.ts ",
-    "build": "tsc ",
-    "train": "nodemon  --exec ts-node src/train.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node dist/server.js",
+    "start:dev": "nodemon --exec ts-node src/server.ts",
+    "build": "tsc"
   },
-  "author": "MIT",
-  "license": "ISC",
+  "author": "Ziynatilloh",
+  "license": "MIT",
   "dependencies": {
-    "@types/helmet": "^4.0.0",
     "anime": "^0.1.2",
     "bcryptjs": "^2.4.3",
     "connect-mongodb-session": "^3.1.1",
