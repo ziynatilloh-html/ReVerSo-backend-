@@ -25,6 +25,8 @@ export enum Message {
   INVALID_OR_EXPIRED_TOKEN = "Token has been expired or invalid",
   RESET_LINK_SENT = "✅ Reset link sent to your email!",
   PASSWORD_CHANGED = "✅ Your password has been changed successfully!",
+  BLOCKED_USER = "You have been blocked by the owner of the website!",
+  INVALID_INPUT = "INVALID_INPUT",
 }
 
 //=== Custom error class ===//

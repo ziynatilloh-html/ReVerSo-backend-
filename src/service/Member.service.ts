@@ -1,5 +1,5 @@
 import MemberModel from "../schema/Member.model";
-import { MemberType } from "../libs/enums/member.enum";
+import { MemberStatus, MemberType } from "../libs/enums/member.enum";
 import Errors, { HttpCode, Message } from "../libs/types/Error";
 import {
   LoginInput,
@@ -35,25 +35,38 @@ class MemberService {
     }
   }
   public async login(input: LoginInput): Promise<Member> {
-    // TODO: Consider member status later
-
     const member = await this.memberModel
-      .findOne({
-        $or: [
-          { memberNick: input.memberNick },
-          { memberPhone: input.memberPhone },
-          { memberEmail: input.memberEmail },
-        ],
-      })
+      .findOne(
+        {
+          $or: [
+            { memberNick: input.memberNick },
+            { memberPhone: input.memberPhone },
+            { memberEmail: input.memberEmail },
+          ],
+          memberStatus: { $ne: MemberStatus.DELETED },
+        },
+        {
+          memberNick: 1,
+          memberPassword: 1,
+          memberStatus: 1,
+        }
+      )
       .select("+memberPassword")
       .exec();
+
     if (!member) throw new Errors(HttpCode.NOT_FOUND, Message.NO_MEMBER_FOUND);
+    else if (member.memberStatus === MemberStatus.BLOCKED) {
+      throw new Errors(HttpCode.FORBIDDEN, Message.BLOCKED_USER);
+    }
+
     const isMatch = await bcrypt.compare(
       input.memberPassword,
       member.memberPassword
     );
+
     if (!isMatch)
       throw new Errors(HttpCode.UNAUTHORIZED, Message.NO_MEMBER_FOUND);
+
     return await this.memberModel.findById(member._id).lean().exec();
   }
 
@@ -95,7 +108,7 @@ class MemberService {
     );
     if (!isMatch)
       throw new Errors(HttpCode.UNAUTHORIZED, Message.WRONG_PASSWORD);
-    return await this.memberModel.findOne(member._id).exec();
+    return await this.memberModel.findById(member._id).exec();
   }
   //======Password Reset======//
   public async requestPassword(

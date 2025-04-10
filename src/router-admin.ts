@@ -20,19 +20,39 @@ routerAdmin
   .post("/login", adminController.processLogin);
 
 routerAdmin
-  .get("/request-password", adminController.getRequestPassword)
-  .post("/request-password", adminController.requestPassword);
+  .get(
+    "/request-password",
+    adminController.verifyAdmin,
+    adminController.getRequestPassword
+  )
+  .post(
+    "/request-password",
+    adminController.verifyAdmin,
+    adminController.requestPassword
+  );
 
 routerAdmin
-  .get("/reset-password/:token", adminController.getResetPassword)
-  .post("/reset-password/:token", adminController.resetPassword);
+  .get(
+    "/reset-password/:token",
+    adminController.verifyAdmin,
+    adminController.getResetPassword
+  )
+  .post(
+    "/reset-password/:token",
+    adminController.verifyAdmin,
+    adminController.resetPassword
+  );
 
 routerAdmin.get("/logout", adminController.processLogout);
 routerAdmin.get("/check-me", adminController.checkAuthSession);
 
 //====Product Routes====//
 
-routerAdmin.get("/dashboard", adminController.getDashboard);
+routerAdmin.get(
+  "/dashboard",
+  adminController.verifyAdmin,
+  adminController.getDashboard
+);
 
 routerAdmin.get(
   "/product/all",
@@ -52,11 +72,7 @@ routerAdmin.post(
   productController.updateChosenProduct
 );
 //====User Routes====//
-routerAdmin.get(
-  "/user/all",
-  adminController.verifyAdmin,
-  adminController.getUsers
-);
+routerAdmin.get("/user/all", adminController.getUsers);
 routerAdmin.post(
   "/edit/user",
   adminController.verifyAdmin,

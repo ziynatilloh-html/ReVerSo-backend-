@@ -119,6 +119,7 @@ adminController.processLogin = async (req: AdminRequest, res: Response) => {
     const memberService = new MemberService();
     const result = await memberService.processLogin(input);
     req.session.member = result;
+    console.log(req.session.member);
     req.session.save((err) => {
       if (err) {
         console.error("Session save error:", err);
