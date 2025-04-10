@@ -6,7 +6,10 @@ import Errors from "../libs/types/Error";
 import { AUTH_TIMER } from "../libs/types/config";
 
 class AuthService {
-  constructor() {}
+  private readonly secretToken;
+  constructor() {
+    this.secretToken = process.env.SECRET_TOKEN as string;
+  }
   public async createToken(payload: Member) {
     return new Promise((resolve, reject) => {
       const duration = `${AUTH_TIMER}h`;
@@ -25,6 +28,14 @@ class AuthService {
         }
       );
     });
+  }
+  public async checkAuth(token: string): Promise<Member> {
+    const result: Member = (await jwt.verify(
+      token,
+      this.secretToken
+    )) as Member;
+    console.log(`----[Auth] memebernickn: ${result.memberNick}---`);
+    return result;
   }
 }
 export default AuthService;

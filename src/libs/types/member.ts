@@ -51,13 +51,6 @@ export interface PasswordResetInput {
   token: string;
   newPassword: string;
 }
-
-export interface AdminRequest extends Request {
-  member: Member;
-  session: Session & { member: Member };
-  file: Express.Multer.File;
-  files: Express.Multer.File[];
-}
 export interface MemberUpdateInput {
   _id: ObjectId;
   memberStatus?: MemberStatus;
@@ -68,4 +61,17 @@ export interface MemberUpdateInput {
   memberDesc?: string;
   memberImages?: string;
   memberEmail?: string;
+}
+
+export interface ExtendedRequest extends Request {
+  member: Member;
+  file: Express.Multer.File;
+  files: Express.Multer.File[];
+}
+
+export interface AdminRequest extends Request {
+  member: Member;
+  session: Session & { member: Member };
+  file: Express.Multer.File;
+  files: Express.Multer.File[];
 }

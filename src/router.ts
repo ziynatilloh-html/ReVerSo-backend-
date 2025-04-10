@@ -5,10 +5,16 @@ import makeUploader from "./libs/utils/uploader";
 
 //====Member Routes====//
 router.post(
-  "/signup",
+  "/member/signup",
   makeUploader("members").single("memberImage"),
   memberController.signup
 );
-router.post("/login", memberController.login);
+router.post("/member/login", memberController.login);
+router.post(
+  "/member/logout",
+  memberController.verifyAuth,
+  memberController.logout
+);
+router.get("/member/detail", memberController.verifyAuth);
 
 export default router;
