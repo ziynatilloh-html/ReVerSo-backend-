@@ -27,6 +27,7 @@ export enum Message {
   PASSWORD_CHANGED = "✅ Your password has been changed successfully!",
   BLOCKED_USER = "You have been blocked by the owner of the website!",
   INVALID_INPUT = "INVALID_INPUT",
+  TOKEN_CREATION_FAILED = "Token creation failed",
 }
 
 //=== Custom error class ===//

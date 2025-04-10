@@ -6,3 +6,5 @@ export const shapeIntoMongooseObjectId = (target: any) => {
     ? new mongoose.Types.ObjectId(target)
     : target;
 };
+
+export const AUTH_TIMER = 24;

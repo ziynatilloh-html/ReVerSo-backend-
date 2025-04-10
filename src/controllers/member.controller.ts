@@ -4,9 +4,11 @@ import { T } from "../libs/types/common";
 import MemberService from "../service/Member.service";
 import { MemberInput } from "../libs/types/member";
 import Errors from "../libs/types/Error";
+import AuthService from "../service/Auth.Service";
 
 //=====Models=====//
 const memberService = new MemberService();
+const authService = new AuthService();
 const memberController: T = {};
 
 //=====SPA=====//
@@ -38,11 +40,16 @@ memberController.signup = async (req: Request, res: Response) => {
     console.log("signup");
     const input = req.body as MemberInput;
     input.memberImage = req.file?.filename;
-    //TODO:Tokens later
     const result = await memberService.signup(input);
+    const token = await authService.createToken(result);
+    console.log("Member token -->:", token);
 
     res.json({ member: result });
-  } catch (err) {}
+  } catch (err) {
+    console.log("Error, login:", err);
+    if (err instanceof Errors) res.status(err.code).json(err);
+    else res.status(Errors.standard.code).json(Errors.standard);
+  }
 };
 memberController.login = async (req: Request, res: Response) => {
   try {
