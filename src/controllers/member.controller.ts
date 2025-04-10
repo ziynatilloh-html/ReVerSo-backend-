@@ -3,8 +3,9 @@ import { Request, Response } from "express";
 import { T } from "../libs/types/common";
 import MemberService from "../service/Member.service";
 import { MemberInput } from "../libs/types/member";
-import Errors from "../libs/types/Error";
+import Errors, { HttpCode } from "../libs/types/Error";
 import AuthService from "../service/Auth.Service";
+import { AUTH_TIMER } from "../libs/types/config";
 
 //=====Models=====//
 const memberService = new MemberService();
@@ -42,9 +43,11 @@ memberController.signup = async (req: Request, res: Response) => {
     input.memberImage = req.file?.filename;
     const result = await memberService.signup(input);
     const token = await authService.createToken(result);
-    console.log("Member token -->:", token);
-
-    res.json({ member: result });
+    res.cookie("accessToken", token, {
+      maxAge: AUTH_TIMER * 3600 * 1000,
+      httpOnly: false,
+    });
+    res.status(HttpCode.CREATED).json({ member: result, accessToken: token });
   } catch (err) {
     console.log("Error, login:", err);
     if (err instanceof Errors) res.status(err.code).json(err);

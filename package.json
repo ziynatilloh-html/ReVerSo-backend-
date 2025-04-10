@@ -11,9 +11,11 @@
   "author": "Ziynatilloh",
   "license": "MIT",
   "dependencies": {
+    "@types/cookie-parser": "^1.4.8",
     "anime": "^0.1.2",
     "bcryptjs": "^2.4.3",
     "connect-mongodb-session": "^3.1.1",
+    "cookie-parser": "^1.4.7",
     "dotenv": "^16.0.0",
     "ejs": "^3.1.6",
     "express": "^4.17.3",
@@ -32,11 +34,11 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@types/jsonwebtoken": "^9.0.9",
     "@types/bcryptjs": "^2.4.6",
     "@types/connect-mongodb-session": "^2.4.7",
     "@types/express": "^4.17.3",
     "@types/express-session": "^1.18.1",
+    "@types/jsonwebtoken": "^9.0.9",
     "@types/morgan": "^1.9.9",
     "@types/multer": "^1.4.12",
     "@types/nodemailer": "^6.4.17",
