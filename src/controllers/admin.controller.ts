@@ -1,3 +1,4 @@
+import { ExtendedRequest, MemberUpdateInput } from "./../libs/types/member";
 import { NextFunction, Request, Response } from "express";
 import { T } from "../libs/types/common";
 import MemberService from "../service/Member.service";
@@ -13,6 +14,18 @@ import Errors, { HttpCode, Message } from "../libs/types/Error";
 const memberService = new MemberService();
 
 const adminController: T = {};
+
+//====Test====/
+adminController.getUpdateAdmin = (req: Request, res: Response) => {
+  try {
+    console.log("getUpdateAdminHome");
+    res.render("profile");
+  } catch (err) {
+    console.log("Error goHome:", err);
+    res.redirect("/admin/dashboard");
+  }
+};
+
 //======SPA======//
 adminController.goHome = (req: Request, res: Response) => {
   try {
@@ -187,6 +200,29 @@ adminController.processLogout = async (req: AdminRequest, res: Response) => {
   }
 };
 //======Admin Panel======//
+adminController.updateAdminData = async (req: AdminRequest, res: Response) => {
+  try {
+    console.log("updateAdminData");
+    const input: MemberUpdateInput = req.body;
+    if (req.file) input.memberImage = req.file.path;
+    const result = await memberService.updateAdminData(req.member, input);
+    req.session.member = result;
+
+    req.session.save((err) => {
+      if (err) {
+        console.error("Session save error after update:", err);
+        return res
+          .status(500)
+          .json({ success: false, message: "Session error" });
+      }
+      res.status(200).json({ success: true, data: result });
+    });
+  } catch (err) {
+    console.log("Error, updateAdminData:", err);
+    if (err instanceof Errors) res.status(err.code).json(err);
+    else res.status(Errors.standard.code).json(Errors.standard);
+  }
+};
 adminController.updateChosenMember = async (req: Request, res: Response) => {
   try {
     console.log("updateChosenMember");

@@ -46,7 +46,7 @@
 
 .nav-item,
 .nav-toggle {
-  background-color: #48b98dcc;
+  background-color: #2b7f5ecc;
   color: #ffffff;
   border: none;
   padding: 12px 16px;
@@ -76,7 +76,7 @@
 }
 
 .sidebar-logout .nav-item {
-  background-color: rgb(160, 18, 18);
+  background-color: rgb(146 146 146);
   color: #ffffff;
   justify-content: center;
 }
@@ -179,7 +179,7 @@
 }
 
 .nav-item.active {
-  background-color: #48b98dcc;
+  background-color: #00925acc;
   color: white;
   font-weight: 600;
 }

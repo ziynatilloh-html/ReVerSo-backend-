@@ -1,0 +1,152 @@
+<%- include('includes/header') %>
+
+<link rel="stylesheet" href="/css/profile.css" />
+<link rel="stylesheet" href="/css/common.css" />
+<link rel="stylesheet" href="/css/dashboard.css" />
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+  rel="stylesheet"
+/>
+
+<body class="dashboard-page">
+  <div class="dashboard-layout">
+    <!-- Sidebar -->
+    <%- include('includes/side-bar') %>
+
+    <!-- Main Content -->
+    <div class="dashboard-content">
+      <!--  Navbar -->
+      <%- include('includes/navbar') %>
+
+      <!-- Page Heading -->
+      <h2 class="profile-heading">My Profile</h2>
+
+      <!-- Profile Card -->
+      <div class="profile-card">
+        <div class="banner-area">
+          <img src="/img/banner.jpg" alt="Banner" class="banner-img" />
+        </div>
+
+        <div class="avatar-wrapper">
+          <img
+            src="<%= member?.memberImage ? '/' + member.memberImage : '/img/profile.png' %>"
+            alt="Avatar"
+            class="avatar-img"
+          />
+        </div>
+
+        <div class="profile-info">
+          <h2><%= member.memberNick %></h2>
+          <p><%= member.memberPhone %></p>
+          <p><%= member.memberEmail %></p>
+          <p><%= member.memberDesc %></p>
+          <p><%= member.memberAddress %></p>
+
+          <div class="social-links">
+            <a
+              href="https://t.me/reverso_official"
+              target="_blank"
+              class="social-icon telegram"
+            >
+              <i class="fab fa-telegram-plane"></i>
+            </a>
+            <a
+              href="https://instagram.com/reverso_official"
+              target="_blank"
+              class="social-icon instagram"
+            >
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a
+              href="https://facebook.com/reverso.official"
+              target="_blank"
+              class="social-icon facebook"
+            >
+              <i class="fab fa-facebook"></i>
+            </a>
+          </div>
+
+          <button class="show-more-btn" onclick="toggleSettings()">
+            Profile settings
+          </button>
+        </div>
+      </div>
+
+      <!-- Drop Down Settings Section -->
+      <div id="settings-section" class="settings-section hidden">
+        <h3>Profile Settings</h3>
+        <form
+          id="settingsForm"
+          action="/admin/update"
+          method="POST"
+          enctype="multipart/form-data"
+          class="settings-form"
+        >
+          <!-- Nickname -->
+
+          <!-- Avatar Upload -->
+          <div class="form-row full">
+            <label class="file-label">Upload New Photo:</label>
+            <input
+              type="file"
+              name="memberImages"
+              accept="image/*"
+              class="file-input"
+            />
+          </div>
+          <div class="form-row">
+            <input
+              type="text"
+              name="memberNick"
+              placeholder="Enter username"
+              value="<%= member?.memberNick || '' %>"
+            />
+          </div>
+
+          <!-- Email -->
+          <div class="form-row">
+            <input
+              type="email"
+              name="memberEmail"
+              placeholder="Enter email address"
+              value="<%= member?.memberEmail || '' %>"
+            />
+          </div>
+
+          <!-- Phone + Address -->
+          <div class="form-row">
+            <input
+              type="text"
+              name="memberPhone"
+              placeholder="Enter phone number"
+              value="<%= member?.memberPhone || '' %>"
+            />
+            <input
+              type="text"
+              name="memberAddress"
+              placeholder="Enter address"
+              value="<%= member?.memberAddress || '' %>"
+            />
+          </div>
+          <div class="form-row full">
+            <textarea
+              name="memberDesc"
+              placeholder="Write a short description..."
+              rows="3"
+              style="width: 100%; padding: 10px; border-radius: 8px"
+            >
+<%= member?.memberDesc || '' %></textarea
+            >
+          </div>
+
+          <!-- Submit -->
+          <div class="form-row full">
+            <button type="submit" class="btn-save">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+<script src="/js/profile.js"></script>
+<%- include('includes/footer') %>

@@ -59,11 +59,12 @@ export interface MemberUpdateInput {
   memberPassword?: string;
   memberAddress?: string;
   memberDesc?: string;
-  memberImages?: string;
+  memberImage?: string;
   memberEmail?: string;
 }
 
 export interface ExtendedRequest extends Request {
+  req: any;
   member: Member;
   file: Express.Multer.File;
   files: Express.Multer.File[];

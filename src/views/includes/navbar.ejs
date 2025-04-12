@@ -17,11 +17,11 @@
     <!-- Right Side: Profile + Support -->
     <div class="header-right">
       <div class="admin-profile">
-        <% if (member?.memberImage) { %>
-        <img src="/uploads/members/<%= member.memberImage %>" alt="Admin" />
-        <% } else { %>
-        <img src="/img/logo.png" alt="Admin" />
-        <% } %>
+        <img
+          src="<%= member?.memberImage ? '/' + member.memberImage : '/img/profile.png' %>"
+          alt="Avatar"
+          class="avatar-img"
+        />
         <div><%= member?.memberNick || "Admin" %></div>
       </div>
 

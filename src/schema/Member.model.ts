@@ -28,10 +28,10 @@ const memberSchema = new Schema(
       select: false,
       required: true,
     },
-    memberAdress: {
+    memberAddress: {
       type: String,
     },
-    memberDescription: {
+    memberDesc: {
       type: String,
     },
     memberEmail: {
