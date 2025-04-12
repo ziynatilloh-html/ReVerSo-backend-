@@ -14,37 +14,41 @@ class GoogleAuthService {
   constructor() {
     this.memberModel = MemberModel;
   }
-
   public async signupWithGoogle(profile: Profile): Promise<Member> {
-    try {
-      const existingAdmin = await this.memberModel
-        .findOne({ memberType: MemberType.ADMIN })
-        .exec();
-      if (existingAdmin) {
-        console.log("Logging in with existing admin:", existingAdmin);
-        return existingAdmin.toJSON();
+    const email = profile.emails?.[0]?.value;
+    const existingMember = await this.memberModel
+      .findOne({ memberEmail: email })
+      .exec();
+
+    if (existingMember) {
+      console.log("🔁 Logging in with existing email:", email);
+
+      // Optional: Update Google-related info
+      if (!existingMember.googleId) {
+        existingMember.googleId = profile.id;
+        existingMember.authProvider = AuthProvider.GOOGLE;
+        existingMember.memberImages = profile.photos?.[0]?.value;
+        await existingMember.save();
       }
-      const created = await this.memberModel.create({
-        memberNick: profile.displayName,
-        memberEmail: profile.emails?.[0]?.value,
-        googleId: profile.id,
-        memberType: MemberType.ADMIN,
-        authProvider: AuthProvider.GOOGLE,
-        memberImage: profile.photos?.[0]?.value,
-        memberStatus: MemberStatus.ACTIVE,
-        memberPhone: "null",
-        memberPassword: "null",
-        memberPoints: 0,
-        memberDesc: "",
-        memberAddress: "",
-      });
-      return created.toJSON();
-    } catch (err: any) {
-      throw new Errors(
-        HttpCode.INTERNAL_SERVER_ERROR,
-        err?.message || Message.CREATE_FAILED
-      );
+
+      return existingMember.toJSON();
     }
+    const created = await this.memberModel.create({
+      memberNick: profile.displayName,
+      memberEmail: email,
+      googleId: profile.id,
+      memberType: MemberType.ADMIN,
+      authProvider: AuthProvider.GOOGLE,
+      memberImage: profile.photos?.[0]?.value,
+      memberStatus: MemberStatus.ACTIVE,
+      memberPhone: "null",
+      memberPassword: "null",
+      memberPoints: 0,
+      memberDesc: "",
+      memberAddress: "",
+    });
+
+    return created.toJSON();
   }
 }
 

@@ -123,7 +123,9 @@ adminController.processSignup = async (req: AdminRequest, res: Response) => {
     const result = await memberService.processSignup(newMember);
 
     req.session.member = result;
-    res.send(result);
+    res.send(
+      `<script>alert("✅ Signup successful! Please log in."); window.location.href='/admin/login';</script>`
+    );
   } catch (err) {
     console.log("Error, processSignup:", err);
     const message =
@@ -141,7 +143,6 @@ adminController.processLogin = async (req: AdminRequest, res: Response) => {
     const memberService = new MemberService();
     const result = await memberService.processLogin(input);
     req.session.member = result;
-    console.log(req.session.member);
     req.session.save((err) => {
       if (err) {
         console.error("Session save error:", err);
