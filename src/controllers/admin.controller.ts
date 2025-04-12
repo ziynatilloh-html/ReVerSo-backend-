@@ -16,6 +16,15 @@ const memberService = new MemberService();
 const adminController: T = {};
 
 //====Test====/
+adminController.getBillingData = (req: Request, res: Response) => {
+  try {
+    console.log("getBillingData");
+    res.render("billing");
+  } catch (err) {
+    console.log("Error goHome:", err);
+    res.redirect("/admin/dashboard");
+  }
+};
 adminController.getUpdateAdmin = (req: Request, res: Response) => {
   try {
     console.log("getUpdateAdminHome");

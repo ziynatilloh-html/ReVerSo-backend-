@@ -45,6 +45,17 @@ routerAdmin
 
 routerAdmin.get("/logout", adminController.processLogout);
 routerAdmin.get("/check-me", adminController.checkAuthSession);
+routerAdmin.get(
+  "/profile",
+
+  adminController.getUpdateAdmin
+);
+routerAdmin.post(
+  "/update",
+  adminController.verifyAdmin,
+  makeUploader("members").single("memberImages"),
+  adminController.updateAdminData
+);
 
 //====Product Routes====//
 
@@ -81,17 +92,6 @@ routerAdmin.post(
 
 routerAdmin.get("/admin-support", adminController.adminSupportPage);
 
-//====Test====/
-routerAdmin.get(
-  "/profile",
-
-  adminController.getUpdateAdmin
-);
-routerAdmin.post(
-  "/update",
-  adminController.verifyAdmin,
-  makeUploader("members").single("memberImages"),
-  adminController.updateAdminData
-);
-
+//====Test===//
+routerAdmin.get("/billing", adminController.getBillingData);
 export default routerAdmin;
