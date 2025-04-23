@@ -1,15 +1,15 @@
-import { mailSender } from "../types/common";
+import { mailSender } from '../types/common';
 
 export const sendResetPasswordEmail = async (
   email: string,
   nick: string,
-  token: string
+  token: string,
 ): Promise<void> => {
   const resetLink = `http://localhost:3007/admin/reset-password/${token}`;
-
+  console.log('🛠️ sendResetPasswordEmail() called with:', email, nick, token);
   await mailSender.sendMail({
     to: email,
-    subject: "Password Reset Request",
+    subject: 'Password Reset Request',
     html: `
       <p>Hi ${nick},</p>
       <p>You requested a password reset. Click the link below to reset your password:</p>
@@ -18,5 +18,5 @@ export const sendResetPasswordEmail = async (
     `,
   });
 
-  console.log("📧 Sent reset link to:", email);
+  console.log('📧 Sent reset link to:', email);
 };
