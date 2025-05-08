@@ -14,33 +14,29 @@ class GoogleAuthService {
   constructor() {
     this.memberModel = MemberModel;
   }
-  public async signupWithGoogle(profile: Profile): Promise<Member> {
+  public async signupWithGoogle(
+    profile: Profile,
+    role: "admin" | "member" = "member"
+  ): Promise<Member> {
     const email = profile.emails?.[0]?.value;
     const existingMember = await this.memberModel
       .findOne({ memberEmail: email })
       .exec();
 
     if (existingMember) {
-      console.log("🔁 Logging in with existing email:", email);
-
-      // Optional: Update Google-related info
-      if (!existingMember.googleId) {
-        existingMember.googleId = profile.id;
-        existingMember.authProvider = AuthProvider.GOOGLE;
-        existingMember.memberImages = profile.photos?.[0]?.value;
-        await existingMember.save();
-      }
-
+      console.log(`🔁 Logging in existing ${role}:`, email);
+      // optionally update fields
       return existingMember.toJSON();
     }
+
     const created = await this.memberModel.create({
       memberNick: profile.displayName,
       memberEmail: email,
       googleId: profile.id,
-      memberType: MemberType.ADMIN,
       authProvider: AuthProvider.GOOGLE,
-      memberImage: profile.photos?.[0]?.value,
+      memberType: role === "admin" ? MemberType.ADMIN : MemberType.MEMBER,
       memberStatus: MemberStatus.ACTIVE,
+      memberImage: profile.photos?.[0]?.value,
       memberPhone: "null",
       memberPassword: "null",
       memberPoints: 0,

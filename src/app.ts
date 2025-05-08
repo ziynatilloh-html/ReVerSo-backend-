@@ -11,7 +11,7 @@ import { T } from "./libs/types/common";
 import passport from "passport";
 import "./libs/utils/passport";
 import cookieParser from "cookie-parser";
-
+import cors from "cors";
 //====Database Connection====//
 const MongoDBStore = ConnectMongoDB(session);
 const store = new MongoDBStore({
@@ -22,6 +22,12 @@ const store = new MongoDBStore({
 //====Express====//
 const app = express();
 
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 app.use(express.json());
@@ -68,7 +74,7 @@ app.use((req, res, next) => {
 //====Admin Routes====//
 app.use("/admin", routerAdmin);
 //====Member Routes====//
-app.use("/", router);
+app.use("/api", router);
 //====Google Auth Routes====//
 app.use("/auth", authRouter);
 

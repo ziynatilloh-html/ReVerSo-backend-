@@ -34,5 +34,28 @@ router.get(
     });
   }
 );
+//=== Google OAuth Members ===//
+router.get(
+  "/member/google",
+  passport.authenticate("google-member", { scope: ["profile", "email"] })
+);
 
+router.get(
+  "/member/google/callback",
+  passport.authenticate("google-member", { failureRedirect: "/login" }),
+  (req, res) => {
+    const user = req.user as Member;
+    (req.session as Session & { member: Member }).member = user;
+
+    req.session.save((err) => {
+      if (err) {
+        console.error("Session save error after Google member login:", err);
+        return res.redirect("/login");
+      }
+
+      console.log("✅ Google MEMBER login successful. Session saved.");
+      res.redirect("http://localhost:3000/account"); // or other member page
+    });
+  }
+);
 export default router;
