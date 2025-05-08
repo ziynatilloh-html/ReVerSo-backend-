@@ -1,15 +1,26 @@
-import { mailSender } from '../types/common';
+import MemberModel from "../../schema/Member.model";
+import { mailSender } from "../types/common";
+import { MemberType } from "../enums/member.enum";
 
 export const sendResetPasswordEmail = async (
   email: string,
   nick: string,
-  token: string,
+  token: string
 ): Promise<void> => {
-  const resetLink = `http://localhost:3007/admin/reset-password/${token}`;
-  console.log('🛠️ sendResetPasswordEmail() called with:', email, nick, token);
+  // 🏃 lookup the member to check their type
+  const member = await MemberModel.findOne({ memberEmail: email });
+
+  const isAdmin = member?.memberType === MemberType.ADMIN;
+
+  const resetLink = isAdmin
+    ? `http://localhost:5001/admin/reset-password/${token}`
+    : `http://localhost:3000/reset-password/${token}`;
+
+  console.log("🛠️ sendResetPasswordEmail() sending link:", resetLink);
+
   await mailSender.sendMail({
     to: email,
-    subject: 'Password Reset Request',
+    subject: "Password Reset Request",
     html: `
       <p>Hi ${nick},</p>
       <p>You requested a password reset. Click the link below to reset your password:</p>
@@ -18,5 +29,5 @@ export const sendResetPasswordEmail = async (
     `,
   });
 
-  console.log('📧 Sent reset link to:', email);
+  console.log("📧 Sent reset link to:", email);
 };

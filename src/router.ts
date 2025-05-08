@@ -17,4 +17,6 @@ router.post(
 );
 router.get("/member/detail", memberController.verifyAuth);
 
+router.post("/member/request-password", memberController.requestPassword);
+router.post("/member/reset-password/:token", memberController.resetPassword);
 export default router;

@@ -113,4 +113,36 @@ memberController.retrieveAuth = async (
   }
 };
 
+//=== Password Reset =====//
+//======Password Reset======//
+memberController.requestPassword = async (req: Request, res: Response) => {
+  try {
+    console.log("member requestPassword");
+    const input = req.body;
+    const result = await memberService.requestPassword(input);
+
+    res.json({ result, error: false });
+  } catch (err) {
+    console.log("Error, member requestPassword:", err);
+    const message =
+      err instanceof Errors ? err.message : Message.SOMETHING_WENT_WRONG;
+    res.status(400).json({ message, error: true });
+  }
+};
+
+memberController.resetPassword = async (req: Request, res: Response) => {
+  try {
+    console.log("member resetPassword");
+    const token = req.params.token;
+    const { newPassword } = req.body;
+
+    await memberService.resetPassword(token, newPassword);
+    res.json({ message: "Password reset successful!" });
+  } catch (err) {
+    console.log("Error, member resetPassword:", err);
+    const message =
+      err instanceof Errors ? err.message : Message.SOMETHING_WENT_WRONG;
+    res.status(400).json({ message, error: true });
+  }
+};
 export default memberController;
