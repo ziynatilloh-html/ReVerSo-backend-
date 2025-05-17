@@ -1,17 +1,17 @@
-import MemberModel from '../schema/Member.model';
-import { MemberStatus, MemberType } from '../libs/enums/member.enum';
-import Errors, { HttpCode, Message } from '../libs/types/Error';
+import MemberModel from "../schema/Member.model";
+import { MemberStatus, MemberType } from "../libs/enums/member.enum";
+import Errors, { HttpCode, Message } from "../libs/types/Error";
 import {
   LoginInput,
   Member,
   MemberInput,
   MemberUpdateInput,
   PasswordResetRequestInput,
-} from '../libs/types/member';
-import * as bcrypt from 'bcryptjs';
-import * as crypto from 'crypto';
-import { sendResetPasswordEmail } from '../libs/utils/email';
-import { shapeIntoMongooseObjectId } from '../libs/types/config';
+} from "../libs/types/member";
+import * as bcrypt from "bcryptjs";
+import * as crypto from "crypto";
+import { sendResetPasswordEmail } from "../libs/utils/email";
+import { shapeIntoMongooseObjectId } from "../libs/types/config";
 
 class MemberService {
   private readonly memberModel;
@@ -27,10 +27,10 @@ class MemberService {
     input.memberPassword = await bcrypt.hash(input.memberPassword, salt);
     try {
       const result = await this.memberModel.create(input);
-      result.memberPassword = '';
+      result.memberPassword = "";
       return result.toJSON();
     } catch (err) {
-      console.error('Error, model:signup', err);
+      console.error("Error, model:signup", err);
       throw new Errors(HttpCode.BAD_REQUEST, Message.USED_NICK_PHONE);
     }
   }
@@ -49,9 +49,9 @@ class MemberService {
           memberNick: 1,
           memberPassword: 1,
           memberStatus: 1,
-        },
+        }
       )
-      .select('+memberPassword')
+      .select("+memberPassword")
       .exec();
 
     if (!member) throw new Errors(HttpCode.NOT_FOUND, Message.NO_MEMBER_FOUND);
@@ -61,7 +61,7 @@ class MemberService {
 
     const isMatch = await bcrypt.compare(
       input.memberPassword,
-      member.memberPassword,
+      member.memberPassword
     );
 
     if (!isMatch)
@@ -83,10 +83,10 @@ class MemberService {
     input.memberPassword = await bcrypt.hash(input.memberPassword, salt);
     try {
       const result = await this.memberModel.create(input);
-      result.memberPassword = '';
+      result.memberPassword = "";
       return result;
     } catch (err) {
-      console.error('processSignup Error:', err);
+      console.error("processSignup Error:", err);
       throw new Errors(HttpCode.BAD_REQUEST, Message.CREATE_FAILED);
     }
   }
@@ -99,12 +99,12 @@ class MemberService {
           { memberEmail: input.memberEmail },
         ],
       })
-      .select('+memberPassword')
+      .select("+memberPassword")
       .exec();
     if (!member) throw new Errors(HttpCode.NOT_FOUND, Message.NO_MEMBER_FOUND);
     const isMatch = await bcrypt.compare(
       input.memberPassword,
-      member.memberPassword,
+      member.memberPassword
     );
     if (!isMatch)
       throw new Errors(HttpCode.UNAUTHORIZED, Message.WRONG_PASSWORD);
@@ -112,15 +112,15 @@ class MemberService {
   }
   //======Password Reset======//
   public async requestPassword(
-    input: PasswordResetRequestInput,
+    input: PasswordResetRequestInput
   ): Promise<{ message: string }> {
     const member = await this.memberModel.findOne({
       memberNick: input.memberNick,
     });
     if (!member) throw new Errors(HttpCode.NOT_FOUND, Message.NO_MEMBER_FOUND);
 
-    const token = crypto.randomBytes(32).toString('hex');
-    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+    const token = crypto.randomBytes(32).toString("hex");
+    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
     const expires = Date.now() + 1000 * 60 * 30;
 
     member.passwordResetToken = hashedToken;
@@ -133,9 +133,9 @@ class MemberService {
   }
   public async resetPassword(
     token: string,
-    newPassword: string,
+    newPassword: string
   ): Promise<void> {
-    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
     const member = await this.memberModel.findOne({
       passwordResetToken: hashedToken,
       passwordResetExpires: { $gt: Date.now() },
@@ -152,7 +152,7 @@ class MemberService {
   //======Admin Panel======//
   public async updateAdminData(
     member: Member,
-    input: MemberUpdateInput,
+    input: MemberUpdateInput
   ): Promise<Member> {
     const memberId = shapeIntoMongooseObjectId(member._id);
     const result = await this.memberModel

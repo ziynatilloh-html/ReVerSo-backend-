@@ -48,7 +48,7 @@ const productSchema = new Schema(
       type: [String],
       default: [],
     },
-    productView: {
+    productViews: {
       type: Number,
       default: 0,
     },

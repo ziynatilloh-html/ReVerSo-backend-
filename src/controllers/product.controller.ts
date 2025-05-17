@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import Errors, { HttpCode, Message } from "../libs/types/Error";
-import { AdminRequest } from "../libs/types/member";
+import { AdminRequest, ExtendedRequest } from "../libs/types/member";
 import ProductService from "../service/Product.service";
 import { ProductInput, ProductInquiry } from "../libs/types/product";
 import { T } from "../libs/types/common";
@@ -37,6 +37,24 @@ productController.getNewArrivals = async (req: Request, res: Response) => {
     res.status(HttpCode.OK).json(result);
   } catch (err) {
     console.error("Error, getNewArrivals:", err);
+    res.status(Errors.standard.code).json(Errors.standard);
+  }
+};
+productController.getPopularProducts = async (req: Request, res: Response) => {
+  try {
+    console.log("getPopularProducts");
+    const { order = "productViews", page = 1, limit = 8 } = req.query;
+
+    const inquiry: ProductInquiry = {
+      order: String(order),
+      page: Number(page),
+      limit: Number(limit),
+    };
+
+    const result = await productService.getPopularProducts(inquiry);
+    res.status(HttpCode.OK).json(result);
+  } catch (err) {
+    console.error("Error, getPopularProducts:", err);
     res.status(Errors.standard.code).json(Errors.standard);
   }
 };

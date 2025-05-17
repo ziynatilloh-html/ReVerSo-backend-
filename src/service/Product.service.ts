@@ -11,12 +11,18 @@ import { Product } from "../libs/types/product";
 import { shapeIntoMongooseObjectId } from "../libs/types/config";
 import { ProductStatus } from "../libs/enums/product.enum";
 import { T } from "../libs/types/common";
+import { ObjectId } from "mongoose";
+import { ViewInput } from "../libs/types/view";
+import { ViewGroup } from "../libs/enums/view.enum";
+import ViewService from "./View.Service";
 
+//=====Product Service=====//
 class ProductService {
   private readonly productModel;
-
+  public viewService;
   constructor() {
     this.productModel = ProductModel;
+    this.viewService = new ViewService();
   }
 
   /** SPA */
@@ -51,9 +57,28 @@ class ProductService {
 
     return result;
   }
+  public async getPopularProducts(inquiry: ProductInquiry): Promise<Product[]> {
+    try {
+      const result = await this.productModel
+        .aggregate([
+          { $match: { productStatus: ProductStatus.PROCESS } },
+          { $sort: { productViews: -1 } },
+          { $skip: (inquiry.page - 1) * inquiry.limit },
+          { $limit: inquiry.limit },
+        ])
+        .exec();
+
+      if (!result || result.length === 0)
+        throw new Errors(HttpCode.NOT_FOUND, Message.NO_DATA_FOUND);
+
+      return result;
+    } catch (err) {
+      console.error("Error, getPopularProducts:", err);
+      throw new Errors(HttpCode.BAD_REQUEST, Message.SOMETHING_WENT_WRONG);
+    }
+  }
 
   //====SSR=====//
-  //=====Product Service=====//
   public async getAllProducts(): Promise<Product[]> {
     const result = await this.productModel.find().exec();
     if (!result) throw new Errors(HttpCode.NOT_FOUND, Message.NO_DATA_FOUND);

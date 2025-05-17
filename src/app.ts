@@ -12,6 +12,8 @@ import passport from "passport";
 import "./libs/utils/passport";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import { memberSession } from "./memberSession";
+import memberController from "./controllers/member.controller";
 //====Database Connection====//
 const MongoDBStore = ConnectMongoDB(session);
 const store = new MongoDBStore({
@@ -50,17 +52,7 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(function (req, res, next) {
-  const sessionInstance = req.session as T;
-  if (req.isAuthenticated() && req.user) {
-    res.locals.member = req.user; //== User from passport==//
-  } else if (sessionInstance.member) {
-    res.locals.member = sessionInstance.member; //== User from session(local)==//
-  } else {
-    res.locals.member = null;
-  }
-  next();
-});
+app.use(memberSession);
 
 //====VIEW ENGINE====//
 app.set("views", path.join(__dirname, "views"));
