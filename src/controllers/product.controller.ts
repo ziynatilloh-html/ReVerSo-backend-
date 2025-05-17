@@ -2,14 +2,46 @@ import { Request, Response } from "express";
 import Errors, { HttpCode, Message } from "../libs/types/Error";
 import { AdminRequest } from "../libs/types/member";
 import ProductService from "../service/Product.service";
-import { ProductInput } from "../libs/types/product";
+import { ProductInput, ProductInquiry } from "../libs/types/product";
 import { T } from "../libs/types/common";
+import { ProductCategory } from "../libs/enums/product.enum";
 
 //=====Models=====//
 const productService = new ProductService();
 const productController: T = {};
 
 //=====Product Controller=====//
+//== SSR ==//
+
+productController.getNewArrivals = async (req: Request, res: Response) => {
+  try {
+    const {
+      order = "createdAt",
+      page = 1,
+      limit = 8,
+      search,
+      productCategory,
+    } = req.query;
+
+    const inquiry: ProductInquiry = {
+      order: String(order),
+      page: Number(page),
+      limit: Number(limit),
+    };
+
+    if (search) inquiry.search = String(search);
+    if (productCategory)
+      inquiry.productCategory = productCategory as ProductCategory;
+
+    const result = await productService.getNewArrivals(inquiry);
+    res.status(HttpCode.OK).json(result);
+  } catch (err) {
+    console.error("Error, getNewArrivals:", err);
+    res.status(Errors.standard.code).json(Errors.standard);
+  }
+};
+
+//=====SSR=====//
 productController.getAllProducts = async (req: AdminRequest, res: Response) => {
   try {
     console.log("getAllProducts");

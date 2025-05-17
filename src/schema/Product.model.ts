@@ -4,6 +4,7 @@ import {
   ProductGender,
   ProductSize,
   ProductStatus,
+  ProductTag,
 } from "../libs/enums/product.enum";
 const productSchema = new Schema(
   {
@@ -50,6 +51,17 @@ const productSchema = new Schema(
     productView: {
       type: Number,
       default: 0,
+    },
+    productTags: {
+      type: [String],
+      enum: ProductTag,
+      default: ProductTag.HOT,
+    },
+    productRating: {
+      type: Number,
+      default: 4,
+      min: 1,
+      max: 5,
     },
   },
   { timestamps: true }

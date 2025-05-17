@@ -2,6 +2,7 @@ import express from "express";
 const router = express.Router();
 import memberController from "./controllers/member.controller";
 import makeUploader from "./libs/utils/uploader";
+import productController from "./controllers/product.controller";
 
 //====Member Routes====//
 router.post(
@@ -20,3 +21,6 @@ router.get("/member/detail", memberController.verifyAuth);
 router.post("/member/request-password", memberController.requestPassword);
 router.post("/member/reset-password/:token", memberController.resetPassword);
 export default router;
+
+//===Product Routes====//
+router.get("/product/new-arrivals", productController.getNewArrivals);

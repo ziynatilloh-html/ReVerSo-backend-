@@ -31,7 +31,7 @@
           <thead>
             <tr>
               <th>Name</th>
-              <th>Type (M/F)</th>
+              <th>Gender</th>
               <th>Size</th>
               <th>Price</th>
               <th>Left Count</th>
@@ -60,19 +60,9 @@
                   class="product-status-btn <%= product.productStatus.toLowerCase() %>"
                   id="<%= product._id %>"
                 >
-                  <% if (product.productStatus === 'DELETE') { %>
-                  <option value="DELETE" selected>Delete</option>
-                  <% } else { %>
-                  <option value="DELETE">Delete</option>
-                  <% } %> <% if (product.productStatus === 'PROCESS') { %>
-                  <option value="PROCESS" selected>Process</option>
-                  <% } else { %>
-                  <option value="PROCESS">Process</option>
-                  <% } %> <% if (product.productStatus === 'PAUSE') { %>
-                  <option value="PAUSE" selected>Pause</option>
-                  <% } else { %>
-                  <option value="PAUSE">Pause</option>
-                  <% } %>
+                  <option value="DELETE" <%= product.productStatus === 'DELETE' ? 'selected' : '' %>>Delete</option>
+                  <option value="PROCESS" <%= product.productStatus === 'PROCESS' ? 'selected' : '' %>>Process</option>
+                  <option value="PAUSE" <%= product.productStatus === 'PAUSE' ? 'selected' : '' %>>Pause</option>
                 </select>
               </td>
             </tr>
@@ -142,7 +132,9 @@
                   <option value="L">L</option>
                   <option value="XL">XL</option>
                   <option value="XXL">XXL</option>
-                </select>
+                  <option value="XXXL">XXXL</option>
+                </select> 
+                <input class="split-s" name="productRating" type="number" min="1" max="5" placeholder="Rating (1-5)" required />
               </div>
 
               <div class="split-field">
@@ -156,16 +148,39 @@
                   <option value="" disabled selected>Gender</option>
                   <option value="MALE">Male</option>
                   <option value="FEMALE">Female</option>
+                  <option value="UNISEX">Unisex</option>
                 </select>
                 <select name="productCategory" required>
                   <option value="" disabled selected>Category</option>
-                  <option value="TOPS">TOPS</option>
-                  <option value="JEANS">JEANS</option>
-                  <option value="JACKETS">JACKETS</option>
-                  <option value="SHOES">SHOES</option>
-                  <option value="ACCESSORIES">ACCESSORIES</option>
-                  <option value="OTHER">OTHER</option>
+                  <option value="TOPS">Tops</option>
+                  <option value="BOTTOMS">Bottoms</option>
+                  <option value="DRESSES">Dresses</option>
+                  <option value="OUTERWEAR">Outerwear</option>
+                  <option value="ACTIVEWEAR">Activewear</option>
+                  <option value="LOUNGEWEAR">Loungewear</option>
+                  <option value="SWIMWEAR">Swimwear</option>
+                  <option value="SHOES">Shoes</option>
+                  <option value="ACCESSORIES">Accessories</option>
+                  <option value="BAGS">Bags</option>
+                  <option value="JEWELRY">Jewelry</option>
+                  <option value="HATS">Hats</option>
+                  <option value="SCARVES">Scarves</option>
+                  <option value="BELTS">Belts</option>
+                  <option value="SUNGLASSES">Sunglasses</option>
+                  <option value="OTHER">Other</option>
+                  <option value="FASHION">Fashion</option>
                 </select>
+                <select name="productTags" required>
+                  <option value="" disabled selected>Select Tag</option>
+                  <option value="HOT">Hot</option>
+                  <option value="NEW_ARRIVAL">New Arrival</option>
+                  <option value="BESTSELLER">Bestseller</option>
+                  <option value="LIMITED_EDITION">Limited Edition</option>
+                  <option value="SALE">Sale</option>
+                  <option value="EXCLUSIVE">Exclusive</option>
+                </select>
+               
+
               </div>
 
               <textarea

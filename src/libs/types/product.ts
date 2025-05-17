@@ -4,6 +4,7 @@ import {
   ProductGender,
   ProductSize,
   ProductStatus,
+  ProductTag,
 } from "../enums/product.enum";
 
 export interface Product {
@@ -18,8 +19,18 @@ export interface Product {
   productDesc?: string;
   productImages: string[];
   productViews: number;
+  productTags?: ProductTag[];
+  productRating?: number;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface ProductInquiry {
+  order: string;
+  page: number;
+  limit: number;
+  productCategory?: ProductCategory;
+  search?: string;
 }
 export interface ProductInput {
   productStatus?: ProductStatus;
@@ -32,6 +43,8 @@ export interface ProductInput {
   productDesc?: string;
   productImages?: string[];
   productViews?: number;
+  productTags?: ProductTag[];
+  productRating?: number;
 }
 export interface ProductUpdateInput {
   _id: ObjectId;
@@ -46,4 +59,6 @@ export interface ProductUpdateInput {
   productDesc?: string;
   productImages?: string[];
   productViews?: number;
+  productTags?: ProductTag[];
+  productRating?: number;
 }

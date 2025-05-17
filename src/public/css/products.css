@@ -213,7 +213,9 @@ body.dashboard-page {
   gap: 10px;
   flex-wrap: wrap;
 }
-
+.split-s {
+  width: 160px;
+}
 .form-fields textarea {
   resize: vertical;
   min-height: 100px;
