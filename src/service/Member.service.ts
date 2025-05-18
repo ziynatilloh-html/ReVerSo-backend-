@@ -108,6 +108,9 @@ class MemberService {
     );
     if (!isMatch)
       throw new Errors(HttpCode.UNAUTHORIZED, Message.WRONG_PASSWORD);
+    if (member.memberType !== "ADMIN") {
+      throw new Errors(HttpCode.UNAUTHORIZED, Message.NOT_AUTHENTICATED);
+    }
     return await this.memberModel.findById(member._id).exec();
   }
   //======Password Reset======//

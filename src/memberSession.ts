@@ -14,8 +14,12 @@ export async function memberSession(
     const sessionInstance = req.session as T;
     const extendedReq = req as ExtendedRequest;
 
-    // Check JWT accessToken first
-    const token = req.cookies["accessToken"];
+    // ✅ Block accessToken auto-login on /admin routes
+    const isAdminRoute = req.originalUrl.startsWith("/admin");
+
+    // ✅ Only check accessToken if not admin route
+    const token = !isAdminRoute ? req.cookies["accessToken"] : null;
+
     if (token) {
       try {
         const member = await authService.checkAuth(token);
@@ -30,7 +34,7 @@ export async function memberSession(
       }
     }
 
-    // Fallback to Passport session (connect.sid)
+    // ✅ Fallback to Passport session or session.member (for admin)
     if (req.isAuthenticated?.() && req.user) {
       extendedReq.member = req.user as Member;
       res.locals.member = req.user;
@@ -46,6 +50,7 @@ export async function memberSession(
       "✅ Current member in middleware (fallback):",
       extendedReq.member?.memberNick
     );
+
     next();
   } catch (error) {
     console.log("❌ Error in memberSession:", error);
