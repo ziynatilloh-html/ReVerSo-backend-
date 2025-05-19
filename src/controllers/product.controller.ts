@@ -60,8 +60,15 @@ productController.getPopularProducts = async (req: Request, res: Response) => {
 };
 productController.getProductById = async (req: Request, res: Response) => {
   try {
+    console.log("getProductById");
     const id = req.params.id;
+
     const result = await productService.getProductById(id);
+
+    // Auto-increase views when product is viewed
+    const memberId = (req as any).member?._id ?? null; // fallback if not logged in
+    await productService.trackProductView(id, memberId);
+
     res.status(HttpCode.OK).json(result);
   } catch (err) {
     console.error("Error, getProductById:", err);

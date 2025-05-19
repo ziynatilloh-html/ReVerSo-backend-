@@ -8,13 +8,14 @@ import { HttpCode } from "../libs/types/Error";
 import Errors from "../libs/types/Error";
 import { Message } from "../libs/types/Error";
 import { Product } from "../libs/types/product";
-import { shapeIntoMongooseObjectId } from "../libs/types/config";
+
 import { ProductStatus } from "../libs/enums/product.enum";
 import { T } from "../libs/types/common";
 import { ObjectId } from "mongoose";
 import { ViewInput } from "../libs/types/view";
 import { ViewGroup } from "../libs/enums/view.enum";
 import ViewService from "./View.Service";
+import { shapeIntoMongooseObjectId } from "../libs/types/config";
 
 //=====Product Service=====//
 class ProductService {
@@ -85,6 +86,41 @@ class ProductService {
     }
     return product;
   }
+  // ✅ Just in case it's needed
+
+  public async trackProductView(
+    productId: string,
+    memberId: string | null
+  ): Promise<void> {
+    try {
+      const _productId = shapeIntoMongooseObjectId(productId);
+
+      // Save in View model if member is logged in
+      if (memberId) {
+        const _memberId = shapeIntoMongooseObjectId(memberId);
+
+        const exists = await this.viewService.checkViewExistence({
+          memberId: _memberId,
+          viewRefId: _productId,
+          viewGroup: ViewGroup.PRODUCT,
+        });
+
+        if (!exists) {
+          await this.viewService.insertMemberView({
+            memberId: _memberId,
+            viewRefId: _productId,
+            viewGroup: ViewGroup.PRODUCT,
+          });
+          await this.productModel.findByIdAndUpdate(_productId, {
+            $inc: { productViews: 1 },
+          });
+        }
+      }
+    } catch (err) {
+      console.error("Error, trackProductView:", err);
+    }
+  }
+
   public async getProductList(
     inquiry: ProductInquiry
   ): Promise<{ products: Product[]; total: number }> {
