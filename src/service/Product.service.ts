@@ -77,6 +77,70 @@ class ProductService {
       throw new Errors(HttpCode.BAD_REQUEST, Message.SOMETHING_WENT_WRONG);
     }
   }
+  public async getProductById(id: string): Promise<Product> {
+    const _id = shapeIntoMongooseObjectId(id);
+    const product = await this.productModel.findById(_id).exec();
+    if (!product) {
+      throw new Errors(HttpCode.NOT_FOUND, Message.NO_DATA_FOUND);
+    }
+    return product;
+  }
+  public async getProductList(
+    inquiry: ProductInquiry
+  ): Promise<{ products: Product[]; total: number }> {
+    const match: T = { productStatus: ProductStatus.PROCESS };
+
+    // === Filtering ===
+    if (inquiry.productCategory) {
+      match.productCategory = inquiry.productCategory;
+    }
+
+    if (inquiry.search) {
+      match.productName = { $regex: new RegExp(inquiry.search, "i") };
+    }
+
+    if (inquiry.category?.length) {
+      match.productCategory = { $in: inquiry.category };
+    }
+
+    if (inquiry.size?.length) {
+      match.productSize = { $in: inquiry.size };
+    }
+
+    if (inquiry.tag?.length) {
+      match.productTags = { $in: inquiry.tag };
+    }
+
+    // === Sorting ===
+    const sort: T = (() => {
+      switch (inquiry.order) {
+        case "productPrice":
+          return { productPrice: 1 }; // Low to High
+        case "productPriceDesc":
+          return { productPrice: -1 }; // High to Low
+        case "productViews":
+          return { productViews: -1 }; // Most Viewed
+        case "createdAt":
+        default:
+          return { createdAt: -1 }; // Newest first
+      }
+    })();
+
+    // === Query execution ===
+    const [products, total] = await Promise.all([
+      this.productModel
+        .aggregate([
+          { $match: match },
+          { $sort: sort },
+          { $skip: (inquiry.page - 1) * inquiry.limit },
+          { $limit: inquiry.limit },
+        ])
+        .exec(),
+      this.productModel.countDocuments(match),
+    ]);
+
+    return { products, total };
+  }
 
   //====SSR=====//
   public async getAllProducts(): Promise<Product[]> {

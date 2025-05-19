@@ -25,3 +25,6 @@ export default router;
 //===Product Routes====//
 router.get("/product/new-arrivals", productController.getNewArrivals);
 router.get("/product/popular-products", productController.getPopularProducts);
+router.get("/product/list", productController.getProductList);
+
+router.get("/product/:id", productController.getProductById);

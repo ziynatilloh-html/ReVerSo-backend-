@@ -11,7 +11,7 @@ const productService = new ProductService();
 const productController: T = {};
 
 //=====Product Controller=====//
-//== SSR ==//
+//== SPA ==//
 
 productController.getNewArrivals = async (req: Request, res: Response) => {
   try {
@@ -55,6 +55,64 @@ productController.getPopularProducts = async (req: Request, res: Response) => {
     res.status(HttpCode.OK).json(result);
   } catch (err) {
     console.error("Error, getPopularProducts:", err);
+    res.status(Errors.standard.code).json(Errors.standard);
+  }
+};
+productController.getProductById = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    const result = await productService.getProductById(id);
+    res.status(HttpCode.OK).json(result);
+  } catch (err) {
+    console.error("Error, getProductById:", err);
+    res.status(Errors.standard.code).json(Errors.standard);
+  }
+};
+
+productController.getProductList = async (req: Request, res: Response) => {
+  try {
+    const {
+      order = "createdAt",
+      page = 1,
+      limit = 12,
+      search,
+      productCategory,
+      category,
+      size,
+      tag,
+    } = req.query;
+
+    const inquiry: ProductInquiry = {
+      order: String(order),
+      page: Number(page),
+      limit: Number(limit),
+    };
+
+    if (search) inquiry.search = String(search);
+    if (productCategory) {
+      inquiry.productCategory = productCategory as ProductCategory;
+    }
+
+    // ✅ Properly handle filters as array of strings
+    if (category) {
+      inquiry.category = Array.isArray(category)
+        ? category.map(String)
+        : String(category).split(",");
+    }
+    if (size) {
+      inquiry.size = Array.isArray(size)
+        ? size.map(String)
+        : String(size).split(",");
+    }
+    if (tag) {
+      inquiry.tag = Array.isArray(tag)
+        ? tag.map(String)
+        : String(tag).split(",");
+    }
+    const { products, total } = await productService.getProductList(inquiry);
+    res.status(HttpCode.OK).json({ products, total });
+  } catch (err) {
+    console.error("Error, getProductList:", err);
     res.status(Errors.standard.code).json(Errors.standard);
   }
 };

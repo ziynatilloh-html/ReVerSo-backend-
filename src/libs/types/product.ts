@@ -31,6 +31,9 @@ export interface ProductInquiry {
   limit: number;
   productCategory?: ProductCategory;
   search?: string;
+  category?: string[]; // new
+  size?: string[]; // new
+  tag?: string[];
 }
 export interface ProductInput {
   productStatus?: ProductStatus;
