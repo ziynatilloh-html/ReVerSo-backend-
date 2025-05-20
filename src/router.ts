@@ -3,6 +3,7 @@ const router = express.Router();
 import memberController from "./controllers/member.controller";
 import makeUploader from "./libs/utils/uploader";
 import productController from "./controllers/product.controller";
+import orderController from "./controllers/order.controller";
 
 //====Member Routes====//
 router.post(
@@ -28,3 +29,6 @@ router.get("/product/popular-products", productController.getPopularProducts);
 router.get("/product/list", productController.getProductList);
 
 router.get("/product/:id", productController.getProductById);
+
+//===Order Routes====//
+router.post("/order", memberController.verifyAuth, orderController.createOrder);

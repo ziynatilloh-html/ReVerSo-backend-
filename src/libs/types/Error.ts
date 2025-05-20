@@ -28,6 +28,7 @@ export enum Message {
   BLOCKED_USER = "You have been blocked by the owner of the website!",
   INVALID_INPUT = "INVALID_INPUT",
   TOKEN_CREATION_FAILED = "Token creation failed",
+  ORDER_ITEMS_MISSING = "ORDER_ITEMS_MISSING",
 }
 
 //=== Custom error class ===//
