@@ -31,4 +31,16 @@ router.get("/product/list", productController.getProductList);
 router.get("/product/:id", productController.getProductById);
 
 //===Order Routes====//
-router.post("/order", memberController.verifyAuth, orderController.createOrder);
+// ✅ 1. Create Stripe PaymentIntent (needs auth)
+router.post(
+  "/order/create-payment-intent",
+  memberController.verifyAuth, // ⛔ require login
+  orderController.createPaymentIntent
+);
+
+// ✅ 2. Save order AFTER payment succeeds (final insert)
+router.post(
+  "/order/save-success",
+  memberController.verifyAuth, // ⛔ require login
+  orderController.saveOrderAfterPayment
+);

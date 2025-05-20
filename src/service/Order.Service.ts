@@ -5,18 +5,24 @@ import { Member } from "../libs/types/member";
 import Errors from "../libs/types/Error";
 import { Message, HttpCode } from "../libs/types/Error";
 import { shapeIntoMongooseObjectId } from "../libs/types/config";
-import { OrderResult } from "../libs/types/order";
+import { OrderItemInput, OrderResult } from "../libs/types/order";
 import { OrderInput } from "../libs/types/order";
 import OrderItemModel from "../schema/OrderItem.model";
-import OrderModel from "../schema/Order.model";
+import OrderModel, { OrderDoc } from "../schema/Order.model";
 
 export default class OrderService {
-  public async createOrder(
+  private readonly orderModel;
+  private orderItemModel = OrderItemModel;
+  constructor() {
+    this.orderModel = OrderModel;
+    this.orderItemModel = OrderItemModel;
+  }
+  public async savePaidOrder(
     member: Member,
-    input: OrderInput
-  ): Promise<OrderResult> {
+    orderInput: OrderInput
+  ): Promise<OrderDoc> {
     const memberId = shapeIntoMongooseObjectId(member._id);
-    const { orderItems, paymentMethod, shippingAddress } = input;
+    const { orderItems, paymentMethod, shippingAddress } = orderInput;
 
     const totalAmount = orderItems.reduce(
       (sum, item) => sum + item.itemPrice * item.itemQuantity,
@@ -24,35 +30,26 @@ export default class OrderService {
     );
     const delivery = totalAmount < 100 ? 5 : 0;
 
-    try {
-      const newOrder = await OrderModel.create({
-        memberId,
-        totalAmount: totalAmount + delivery,
-        paymentMethod,
-        orderStatus: "PENDING",
-        shippingAddress,
-      });
+    const newOrder = await this.orderModel.create({
+      memberId,
+      totalAmount: totalAmount + delivery,
+      paymentMethod,
+      orderStatus: "PAID",
+      shippingAddress,
+    });
 
-      await OrderItemModel.insertMany(
-        orderItems.map((item) => ({
-          orderId: newOrder._id,
-          productId: shapeIntoMongooseObjectId(item.productId),
-          itemPrice: item.itemPrice,
-          itemQuantity: item.itemQuantity,
-        }))
-      );
+    await this.recordOrderItem(newOrder._id, orderItems);
+    return newOrder;
+  }
 
-      return {
-        _id: newOrder._id,
-        memberId: newOrder.memberId,
-        orderTotal: newOrder.totalAmount,
-        orderDelivery: delivery,
-        createdAt: newOrder.createdAt,
-        updatedAt: newOrder.updatedAt,
-      };
-    } catch (err) {
-      console.error("Error,model:CreateOrder", err);
-      throw new Errors(HttpCode.BAD_REQUEST, Message.CREATE_FAILED);
-    }
+  private async recordOrderItem(orderId: ObjectId, items: OrderItemInput[]) {
+    const itemData = items.map((item) => ({
+      orderId,
+      productId: shapeIntoMongooseObjectId(item.productId),
+      itemPrice: item.itemPrice,
+      itemQuantity: item.itemQuantity,
+    }));
+
+    await this.orderItemModel.insertMany(itemData);
   }
 }
