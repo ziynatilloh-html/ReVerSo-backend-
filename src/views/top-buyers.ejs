@@ -1,0 +1,187 @@
+<%- include('./includes/header') %>
+<link rel="stylesheet" href="/css/dashboard.css" />
+<link rel="stylesheet" href="/css/billing.css" />
+<link rel="stylesheet" href="/css/common.css" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<body class="dashboard-page">
+  <div class="dashboard-layout">
+    <%- include('./includes/side-bar') %>
+
+    <div class="dashboard-content">
+      <%- include('./includes/navbar') %>
+
+      <!-- KPI CARDS -->
+      <div class="kpi-cards">
+        <div class="kpi-card purple">
+          <h4>Total Orders</h4>
+          <h2><%= kpis.totalOrders %></h2>
+        </div>
+        <div class="kpi-card blue">
+          <h4>Total Revenue</h4>
+          <h2>₩<%= kpis.totalRevenue.toLocaleString() %></h2>
+        </div>
+        <div class="kpi-card green">
+          <h4>Total Customers</h4>
+          <h2><%= kpis.totalCustomers %></h2>
+        </div>
+      </div>
+
+      <!-- CHARTS SECTION -->
+      <div class="charts-grid">
+        <!-- Bar Chart -->
+        <div class="chart-box">
+          <div class="chart-header">
+            <h3>Sales & Purchases</h3>
+            <select>
+              <option>6 Months</option>
+              <option>12 Months</option>
+            </select>
+          </div>
+          <canvas id="salesChart"></canvas>
+        </div>
+
+        <!-- Pie Chart -->
+        <div class="chart-box">
+          <h3>Top Categories</h3>
+          <canvas id="categoryPieChart"></canvas>
+        </div>
+      </div>
+
+      <!-- TOP BUYERS -->
+      <div class="leaderboard">
+        <h3>Top Buyers</h3>
+        <table class="top-buyers-table">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Member</th>
+              <th>Total Spent</th>
+              <th>Last Purchase</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (typeof topBuyers !== 'undefined') { %> <%
+            topBuyers.forEach((buyer, index) => { %>
+            <tr>
+              <td>
+                <% if(index === 0) { %> 🥇 <% } else if(index === 1) { %> 🥈 <%
+                } else if(index === 2) { %> 🥉 <% } else { %> <%= index + 1 %>
+                <% } %>
+              </td>
+              <td><%= buyer.nickname %></td>
+              <td>₩<%= buyer.totalSpentFormatted %></td>
+              <td><%= buyer.lastPurchaseFormatted %></td>
+            </tr>
+            <% }) %> <% } else { %>
+            <tr>
+              <td colspan="4">No buyer data available</td>
+            </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- Debug Output for Monthly Sales -->
+  <pre style="font-size: 10px; color: red">
+  <%- JSON.stringify(monthlySales, null, 2) %>
+  </pre>
+
+  <!-- Debug Output for Top Categories -->
+  <pre style="font-size: 10px; color: blue">
+  <%- JSON.stringify(topCategories, null, 2) %>
+  </pre>
+  <!-- Pass chart data safely -->
+  <script id="monthlySalesData" type="application/json">
+    <%- JSON.stringify(monthlySales).replace(/</g, '\u003c') %>
+  </script>
+
+  <script id="categoryData" type="application/json">
+    <%- JSON.stringify(topCategories).replace(/</g, '\u003c') %>
+  </script>
+
+  <!-- Chart Scripts -->
+  <script>
+    let salesData = [];
+    try {
+      const salesRaw = document
+        .getElementById("monthlySalesData")
+        .textContent.trim();
+      salesData = JSON.parse(salesRaw);
+    } catch (e) {
+      console.warn("monthlySalesData not available");
+    }
+
+    if (!salesData || salesData.length === 0) {
+      salesData = [{ month: "N/A", total: 0, orders: 0 }];
+    }
+
+    let categoryData = [];
+    try {
+      const categoryRaw = document
+        .getElementById("categoryData")
+        .textContent.trim();
+      categoryData = JSON.parse(categoryRaw);
+    } catch (e) {
+      console.warn("categoryData not available");
+    }
+
+    if (!categoryData || categoryData.length === 0) {
+      categoryData = [{ name: "No Data", value: 1 }];
+    }
+
+    const labels = salesData.map((entry) => entry.month);
+    const sales = salesData.map((entry) => entry.total);
+    const purchases = salesData.map((entry) => entry.orders);
+
+    new Chart(document.getElementById("salesChart"), {
+      type: "bar",
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: "Sales",
+            backgroundColor: "#FF6384",
+            data: sales,
+          },
+          {
+            label: "Purchases",
+            backgroundColor: "#36A2EB",
+            data: purchases,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { position: "bottom" } },
+        scales: { y: { beginAtZero: true } },
+      },
+    });
+
+    new Chart(document.getElementById("categoryPieChart"), {
+      type: "pie",
+      data: {
+        labels: categoryData.map((c) => c.name),
+        datasets: [
+          {
+            data: categoryData.map((c) => c.value),
+            backgroundColor: [
+              "#FF6384",
+              "#36A2EB",
+              "#FFCE56",
+              "#8BC34A",
+              "#FF9800",
+            ],
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { position: "right" } },
+      },
+    });
+  </script>
+</body>
+
+<%- include('./includes/footer') %>

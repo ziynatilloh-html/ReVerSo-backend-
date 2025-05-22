@@ -10,21 +10,14 @@ import {
   PasswordResetRequestInput,
 } from "../libs/types/member";
 import Errors, { HttpCode, Message } from "../libs/types/Error";
+import AnalyticsService from "../service/Analytics.Service";
 
 const memberService = new MemberService();
+const analyticsService = new AnalyticsService();
 
 const adminController: T = {};
 
 //====Test====/
-adminController.getBillingData = (req: Request, res: Response) => {
-  try {
-    console.log("getBillingData");
-    res.render("billing");
-  } catch (err) {
-    console.log("Error goHome:", err);
-    res.redirect("/admin/dashboard");
-  }
-};
 adminController.getUpdateAdmin = (req: Request, res: Response) => {
   try {
     console.log("getUpdateAdminHome");
@@ -281,4 +274,31 @@ adminController.verifyAdmin = (
     res.send(`<script>alert("${message}")<script>`);
   }
 };
+
+adminController.getAnalyticsDashboardData = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const kpis = await analyticsService.getKPI();
+    const monthlySales = await analyticsService.getMonthlySales();
+    const topCategories = await analyticsService.getTopCategories();
+    const topBuyers = await analyticsService.getTopBuyers();
+
+    console.log("monthlySales:", monthlySales);
+    console.log("topCategories:", topCategories);
+    console.log("topBuyers:", topBuyers);
+
+    res.render("top-buyers", {
+      kpis,
+      monthlySales,
+      topCategories,
+      topBuyers,
+    });
+  } catch (err) {
+    console.error("\u274C Analytics Dashboard Error:", err);
+    res.redirect("/admin/dashboard");
+  }
+};
+
 export default adminController;

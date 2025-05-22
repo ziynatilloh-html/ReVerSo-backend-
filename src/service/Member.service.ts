@@ -13,12 +13,20 @@ import * as bcrypt from "bcryptjs";
 import * as crypto from "crypto";
 import { sendResetPasswordEmail } from "../libs/utils/email";
 import { shapeIntoMongooseObjectId } from "../libs/types/config";
+import OrderModel from "../schema/Order.model";
+import ProductModel from "../schema/Product.model";
+import OrderItemModel from "../schema/OrderItem.model";
 
 class MemberService {
   private readonly memberModel;
-
+  private readonly orderModel;
+  private readonly productModel;
+  private readonly orderItemModel;
   constructor() {
     this.memberModel = MemberModel;
+    this.orderModel = OrderModel;
+    this.productModel = ProductModel;
+    this.orderItemModel = OrderItemModel;
   }
 
   //======SPA======//

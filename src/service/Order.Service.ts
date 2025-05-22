@@ -79,8 +79,6 @@ export default class OrderService {
       .find({ memberId: _memberId })
       .sort({ createdAt: -1 })
       .exec();
-
-    // ✅ Return empty array instead of throwing
     return orders;
   }
 }
