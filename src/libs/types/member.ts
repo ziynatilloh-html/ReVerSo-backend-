@@ -66,6 +66,7 @@ export interface MemberUpdateInput {
 export interface ExtendedRequest extends Request {
   req: any;
   member?: Member;
+  session: Session & { member: Member };
   file: Express.Multer.File;
   files: Express.Multer.File[];
 }
@@ -76,4 +77,28 @@ export interface AdminRequest extends Request {
   session: Session & { member: Member };
   file: Express.Multer.File;
   files: Express.Multer.File[];
+}
+export interface MemberTokenPayload {
+  _id: ObjectId;
+  memberNick: string;
+  memberEmail?: string;
+  memberStatus: MemberStatus;
+  memberType: MemberType;
+  memberImage?: string;
+  memberAddress?: string;
+  memberPhone?: string;
+  memberPoints?: number;
+}
+export function filterTokenPayload(member: Member): MemberTokenPayload {
+  return {
+    _id: member._id,
+    memberNick: member.memberNick,
+    memberEmail: member.memberEmail,
+    memberStatus: member.memberStatus,
+    memberType: member.memberType,
+    memberImage: member.memberImage,
+    memberAddress: member.memberAddress,
+    memberPhone: member.memberPhone,
+    memberPoints: member.memberPoints,
+  };
 }

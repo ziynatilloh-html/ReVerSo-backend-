@@ -1,4 +1,10 @@
-import { ExtendedRequest, LoginInput, Member } from "./../libs/types/member";
+import {
+  ExtendedRequest,
+  filterTokenPayload,
+  LoginInput,
+  Member,
+  MemberUpdateInput,
+} from "./../libs/types/member";
 import { NextFunction, Request, Response } from "express";
 import { T } from "../libs/types/common";
 import MemberService from "../service/Member.service";
@@ -150,4 +156,63 @@ memberController.resetPassword = async (req: Request, res: Response) => {
     res.status(400).json({ message, error: true });
   }
 };
+
+memberController.updateSelf = async (req: ExtendedRequest, res: Response) => {
+  try {
+    if (!req.member || !req.member._id) {
+      return res.status(HttpCode.UNAUTHORIZED).json({
+        code: HttpCode.UNAUTHORIZED,
+        message: Message.NOT_AUTHENTICATED,
+      });
+    }
+
+    const input = req.body as MemberUpdateInput;
+    input._id = req.member._id;
+
+    // ✅ Handle uploaded image
+    if (req.file) {
+      input.memberImage = req.file.filename;
+    }
+
+    // ✅ Update member in DB
+    const updated = await memberService.updateSelf(req.member, input);
+
+    // ✅ Re-issue token with minimal safe payload
+    const token = await authService.createToken(filterTokenPayload(updated));
+
+    // ✅ Replace old cookie with fresh token
+    res.cookie("accessToken", token, {
+      maxAge: AUTH_TIMER * 3600 * 1000,
+      httpOnly: false,
+    });
+
+    // ✅ Return updated member
+    res.status(HttpCode.OK).json(updated);
+  } catch (err) {
+    console.error("❌ updateSelf error:", err);
+    res.status(HttpCode.INTERNAL_SERVER_ERROR).json({
+      code: HttpCode.INTERNAL_SERVER_ERROR,
+      message: Message.UPDATE_FAILED,
+    });
+  }
+};
+
+memberController.getSelf = async (req: ExtendedRequest, res: Response) => {
+  try {
+    if (!req.member || !req.member._id) {
+      return res.status(401).json({
+        code: 401,
+        message: "Not authenticated",
+      });
+    }
+
+    // ✅ Re-fetch full member info from DB
+    const fullMember = await memberService.getById(req.member._id);
+    res.status(200).json(fullMember); // ✅ Now truly fresh
+  } catch (err) {
+    console.error("Error in getSelf:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 export default memberController;

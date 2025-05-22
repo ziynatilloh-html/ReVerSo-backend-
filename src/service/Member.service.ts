@@ -1,3 +1,4 @@
+import { ObjectId } from "mongoose";
 import MemberModel from "../schema/Member.model";
 import { MemberStatus, MemberType } from "../libs/enums/member.enum";
 import Errors, { HttpCode, Message } from "../libs/types/Error";
@@ -68,6 +69,34 @@ class MemberService {
       throw new Errors(HttpCode.UNAUTHORIZED, Message.NO_MEMBER_FOUND);
 
     return await this.memberModel.findById(member._id).lean().exec();
+  }
+  public async updateSelf(
+    member: Member,
+    input: MemberUpdateInput
+  ): Promise<Member> {
+    const memberId = shapeIntoMongooseObjectId(member._id);
+
+    const result = await this.memberModel
+      .findOneAndUpdate({ _id: memberId }, input, { new: true })
+      .exec();
+
+    if (!result) throw new Errors(HttpCode.NOT_MODIFIED, Message.UPDATE_FAILED);
+    return result;
+  }
+  public async addUserPoint(member: Member, point: number): Promise<Member> {
+    const memberId = shapeIntoMongooseObjectId(member._id);
+
+    return await this.memberModel
+      .findOneAndUpdate(
+        {
+          _id: memberId,
+          memberStatus: MemberStatus.ACTIVE,
+        },
+        { $inc: { memberPoints: point } },
+        { new: true }
+      )
+      .lean()
+      .exec();
   }
 
   //======SSR======//
@@ -152,6 +181,14 @@ class MemberService {
 
     await member.save();
   }
+  public async getById(_id: ObjectId): Promise<Member> {
+    const memberId = shapeIntoMongooseObjectId(_id);
+    const result = await this.memberModel.findById(memberId).lean().exec();
+
+    if (!result) throw new Errors(HttpCode.NOT_FOUND, Message.NO_MEMBER_FOUND);
+    return result;
+  }
+
   //======Admin Panel======//
   public async updateAdminData(
     member: Member,

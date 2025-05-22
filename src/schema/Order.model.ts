@@ -18,6 +18,7 @@ export interface OrderDoc extends Document {
   shippingAddress: ShippingAddress;
   createdAt: Date;
   updatedAt: Date;
+  previewItem: string;
 }
 
 const orderSchema = new Schema<OrderDoc>(
@@ -41,6 +42,10 @@ const orderSchema = new Schema<OrderDoc>(
       city: { type: String, required: true },
       postalCode: { type: String, required: true },
       country: { type: String, required: true },
+    },
+    previewItem: {
+      name: String,
+      image: String,
     },
   },
   { timestamps: true, collection: "orders" }

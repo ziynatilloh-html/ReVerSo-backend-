@@ -69,6 +69,29 @@ orderController.saveOrderAfterPayment = async (
     console.error("❌ Error saving order:", err);
     res.status(HttpCode.INTERNAL_SERVER_ERROR).json(Errors.standard);
   }
+  // ✅ Get Orders by Member ID
+};
+orderController.getOrdersByMember = async (
+  req: ExtendedRequest,
+  res: Response
+) => {
+  try {
+    const memberId = req.params.memberId;
+
+    if (!req.member || req.member._id.toString() !== memberId) {
+      return res.status(HttpCode.UNAUTHORIZED).json({
+        code: HttpCode.UNAUTHORIZED,
+        message: Message.NOT_AUTHENTICATED,
+      });
+    }
+
+    const orders = await orderService.getOrdersByMember(memberId);
+
+    return res.status(HttpCode.OK).json(orders); // ✅ always return array
+  } catch (err) {
+    console.error("❌ Error fetching member orders:", err);
+    return res.status(HttpCode.INTERNAL_SERVER_ERROR).json(Errors.standard);
+  }
 };
 
 export default orderController;

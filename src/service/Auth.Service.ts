@@ -1,5 +1,5 @@
 import { HttpCode } from "../libs/types/Error";
-import { Member } from "../libs/types/member";
+import { Member, MemberTokenPayload } from "../libs/types/member";
 import jwt from "jsonwebtoken";
 import { Message } from "../libs/types/Error";
 import Errors from "../libs/types/Error";
@@ -10,15 +10,15 @@ class AuthService {
   constructor() {
     this.secretToken = process.env.SECRET_TOKEN as string;
   }
-  public async createToken(payload: Member) {
+  public async createToken(
+    payload: Member | MemberTokenPayload
+  ): Promise<string> {
     return new Promise((resolve, reject) => {
       const duration = `${AUTH_TIMER}h`;
       jwt.sign(
         payload,
-        process.env.SECRET_TOKEN as string,
-        {
-          expiresIn: duration,
-        },
+        this.secretToken,
+        { expiresIn: duration },
         (err, token) => {
           if (err)
             reject(

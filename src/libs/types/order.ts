@@ -14,6 +14,8 @@ export interface OrderItemInput {
   productId: Types.ObjectId | string;
   itemPrice: number;
   itemQuantity: number;
+  productName: string;
+  productImage: string;
 }
 
 export interface OrderInput {

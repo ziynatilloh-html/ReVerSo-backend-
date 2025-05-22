@@ -17,7 +17,18 @@ router.post(
   memberController.verifyAuth,
   memberController.logout
 );
-router.get("/member/detail", memberController.verifyAuth);
+router.get(
+  "/member/detail",
+  memberController.verifyAuth,
+  memberController.getSelf
+);
+
+router.post(
+  "/member/update",
+  memberController.verifyAuth,
+  makeUploader("members").single("memberImage"),
+  memberController.updateSelf
+);
 
 router.post("/member/request-password", memberController.requestPassword);
 router.post("/member/reset-password/:token", memberController.resetPassword);
@@ -43,4 +54,11 @@ router.post(
   "/order/save-success",
   memberController.verifyAuth, // ⛔ require login
   orderController.saveOrderAfterPayment
+);
+
+// ✅ 3. Get all orders for the current logged-in member
+router.get(
+  "/order/member/:memberId",
+  memberController.verifyAuth, // ⛔ require login
+  orderController.getOrdersByMember
 );
