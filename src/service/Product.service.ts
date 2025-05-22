@@ -197,9 +197,18 @@ class ProductService {
     input: ProductUpdateInput
   ): Promise<Product> {
     id = shapeIntoMongooseObjectId(id);
+
+    // If DELETE is selected, remove the product permanently
+    if (input.productStatus === "DELETE") {
+      await this.productModel.deleteOne({ _id: id }).exec();
+      return "Product deleted" as unknown as Product; // Cast to Product type
+      // or throw new Error("Product deleted") if needed
+    }
+
     const result = await this.productModel
       .findOneAndUpdate({ _id: id }, input, { new: true })
       .exec();
+
     if (!result) throw new Errors(HttpCode.NOT_MODIFIED, Message.UPDATE_FAILED);
     return result;
   }

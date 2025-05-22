@@ -214,6 +214,10 @@ class MemberService {
     const result = await this.memberModel
       .findByIdAndUpdate({ _id: input._id }, input, { new: true })
       .exec();
+    if (input.memberStatus === MemberStatus.DELETED) {
+      await this.memberModel.deleteOne({ _id: input._id }).exec();
+      return "Product deleted" as unknown as Member;
+    }
     if (!result) throw new Errors(HttpCode.NOT_MODIFIED, Message.UPDATE_FAILED);
     return result;
   }
