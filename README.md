@@ -6,7 +6,7 @@ This repository contains the server-side logic for ReVer:So — handling everyth
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 src/
@@ -56,20 +56,20 @@ src/
 
 ## 🧩 Features
 
-- 🔐 **Authentication**
+-  **Authentication**
   - Google OAuth2 (via Passport.js)
   - Session-based login with `express-session`
-- 👥 **Member Management** (Admin panel)
-- 🛍️ **Product Management** (CRUD)
-- 📦 **Order System** with session tracking
-- 📊 **View & Analytics Tracking**
-- 📤 **Image Uploads** with Multer
-- 📧 **Email notifications** using Nodemailer
-- 🧠 **Session Store**: MongoDB
+- **Member Management** (Admin panel)
+- **Product Management** (CRUD)
+- **Order System** with session tracking
+- **View & Analytics Tracking**
+- **Image Uploads** with Multer
+- **Email notifications** using Nodemailer
+- **Session Store**: MongoDB
 
 ---
 
-## ⚙️ Tech Stack
+##  Tech Stack
 
 - **Node.js**, **Express**
 - **TypeScript**
@@ -82,7 +82,7 @@ src/
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### 1. Clone the repository
 
@@ -125,7 +125,7 @@ npm start
 
 ---
 
-## 📜 Scripts
+##  Scripts
 
 | Command            | Description                      |
 |--------------------|----------------------------------|
@@ -135,7 +135,7 @@ npm start
 
 ---
 
-## 📸 Project Preview
+##  Project Preview
 
 > Add a preview image below:
 ```![photo_2025-08-05 23 34 22](https://github.com/user-attachments/assets/a23329cc-42a5-4a63-9db6-b5427c615abc)![photo_2025-08-05 23 34 16](https://github.com/user-attachments/assets/0e8af7c9-5440-468d-ada6-9d24e619cf07)
@@ -144,6 +144,6 @@ npm start
 
 ---
 
-## 📄 License
+##  License
 
-MIT © Ziynatilloh
+MIT ©
