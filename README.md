@@ -54,7 +54,7 @@ src/
 
 ---
 
-## 🧩 Features
+## Features
 
 -  **Authentication**
   - Google OAuth2 (via Passport.js)
