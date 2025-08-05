@@ -137,8 +137,10 @@ npm start
 
 ##  Project Preview
 
-> Add a preview image below:
-```![photo_2025-08-05 23 34 22](https://github.com/user-attachments/assets/a23329cc-42a5-4a63-9db6-b5427c615abc)![photo_2025-08-05 23 34 16](https://github.com/user-attachments/assets/0e8af7c9-5440-468d-ada6-9d24e619cf07)
+![photo_2025-08-05 23 34 16](https://github.com/user-attachments/assets/78de44d4-ce42-48b6-88ba-4eb595d6257e)
+
+![photo_2025-08-05 23 34 22](https://github.com/user-attachments/assets/655d8374-be4f-447d-8349-43a31e20b1f9)
+
 
 ```
 
